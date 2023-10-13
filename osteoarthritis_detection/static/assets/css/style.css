@@ -1084,7 +1084,12 @@ section {
 .appointment .php-email-form textarea {
   padding: 10px 12px;
 }
-
+.btn-gap {
+  margin-left: 240px; /* Adjust the margin as needed */
+}
+.login {
+  padding-left: 350px;
+}
 .appointment .php-email-form button[type=submit] {
   background: #1977cc;
   border: 0;

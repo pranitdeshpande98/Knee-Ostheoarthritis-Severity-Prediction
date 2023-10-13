@@ -41,7 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=12)
     age = models.PositiveIntegerField()
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
-    password = models.CharField(max_length=128)
+
 
     date_joined = models.DateTimeField(default=timezone.now)
     last_login = models.DateTimeField(default=timezone.now)

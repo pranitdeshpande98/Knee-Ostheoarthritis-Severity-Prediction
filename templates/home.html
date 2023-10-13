@@ -9,11 +9,11 @@
   <title>Osteo Arthritis Severity Detection System</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
   <!-- Favicons -->
   <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
   <link href="{% static 'assts/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
-
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
@@ -260,7 +260,8 @@
           <p></p>
         </div>
 
-        <form action="{% static 'forms/appointment.php' %}" method="post" role="form" class="php-email-form">
+        <form action="{% url 'login' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
             <div class="col-md-9 form-group mt-3 mt-md-0 login">
               <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
               <br>
@@ -271,14 +272,18 @@
             <div class="container">
               <div class="row justify-content-center">
                   <div class="col-1">
-                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    <input type="submit" class="btn btn-primary btn-block" value="Login">
                   </div>
                   <div class="col-4 text-right">
-                    <a href="#" class="btn btn-link btn-gap">Forgot Password</a>
+                    <a href="{% url 'forgot_password' %}" class="btn btn-link btn-gap">Forgot Password</a>
                   </div>
               </div>
           </div>
-          
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    {% include 'alert.html' %}
+            </div>
+            </div>
         </form>
 
       </div>
@@ -294,46 +299,61 @@
           <p></p>
         </div>
 
-        <form action="{% url 'dashboard' %}" method="post" class="php-email-form">
+        <form action="{% url 'dashboard' %}" method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="row">
-            <div class="col-md-4 form-group">
-              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-              <div class="validate"></div>
-            </div>
-            <div class="col-md-4 form-group mt-3 mt-md-0">
-              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
-              <div class="validate"></div>
-            </div>
-            <div class="col-md-4 form-group mt-3 mt-md-0">
-              <input type="tel" class="form-control" name="phone" id="phone" placeholder="Your Phone" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-              <div class="validate"></div>
-            </div>
+              <div class="col-md-4 form-group">
+                  <label for="{{ form.name.id_for_label }}">Name:</label>
+                  <input type="text" name="name" class="form-control" id="{{ form.name.id_for_label }}" placeholder="Your Name">
+                  {{ form.name.errors }}
+              </div>
+              <div class="col-md-4 form-group mt-3 mt-md-0">
+                  <label for="{{ form.email.id_for_label }}">Email:</label>
+                  <input type="email" class="form-control" name="email" id="{{ form.email.id_for_label }}" placeholder="Your Email">
+                  {{ form.email.errors }}
+              </div>
+              <div class="col-md-4 form-group mt-3 mt-md-0">
+                  <label for="{{ form.phone.id_for_label }}">Phone:</label>
+                  <input type="tel" class="form-control" name="phone" id="{{ form.phone.id_for_label }}" placeholder="Your Phone">
+                  {{ form.phone.errors }}
+              </div>
           </div>
           <div class="row">
-            <div class="col-md-4 form-group mt-3">
-              <input type="number" name="Age" class="form-control age" id="age" placeholder="Age" data-rule="minlen:4">
-              <div class="validate"></div>
-            </div>
-            <div class="col-md-4 form-group mt-3">
-              <select name="gender" id="gender" class="form-select">
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Others">Others</option>
-              </select>
-              <div class="validate"></div>
-            </div>
-            <div class="col-md-4 form-group mt-3">
-              <input type="password" id="password" class="form-control" placeholder = "Password">
-              <div class="validate"></div>
-            </div>
+              <div class="col-md-4 form-group mt-3">
+                  <label for="{{ form.age.id_for_label }}">Age:</label>
+                  <input type="number" name="age" class="form-control age" id="{{ form.age.id_for_label }}" placeholder="Age">
+                  {{ form.age.errors }}
+              </div>
+              <div class="col-md-4 form-group mt-3">
+                  <label for="{{ form.gender.id_for_label }}">Gender:</label>
+                  <select name="gender" id="{{ form.gender.id_for_label }}" class="form-select">
+                      <option value="">Select Gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Others">Others</option>
+                  </select>
+                  {{ form.gender.errors }}
+              </div>
+              <div class="col-md-4 form-group mt-3">
+                  <label for="{{ form.password.id_for_label }}">Password:</label>
+                  <input type="password" name="password" class="form-control" id="{{ form.password.id_for_label }}" placeholder="Password">
+                  {{ form.password.errors }}
+              </div>
           </div>
+          <br>
           <div class="text-center">
-            <input type="submit" class="btn btn-primary btn-block" value="Register">
+              <input type="submit" class="btn btn-primary btn-block" value="Register">
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    {% include 'alert.html' %}
+            </div>
+            </div>
         </div>
-        
-        </form>
+
+      </form>
+      
+
       </div>
     </section><!-- End Appointment Section -->
 
@@ -526,7 +546,6 @@
 
   <div id="preloader"></div>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <!-- Vendor JS Files -->
   <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
   <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -536,6 +555,17 @@
 
   <!-- Template Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
+  <script>
+    function displaySweetAlert(message, type, duration = 4000) {
+        Swal.fire({
+            title: message,
+            icon: type,
+            showConfirmButton: false,
+            timer: duration,
+        });
+    }
+</script>
+
 </body>
 
 </html>

@@ -9,10 +9,16 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('The Email field must be set')
 
         email = self.normalize_email(email)
+
+        # Check if a user with the provided email already exists
+        if self.filter(email=email).exists():
+            raise ValueError('A user with this email address already exists. Please choose a different email.')
+
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
+
 
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)

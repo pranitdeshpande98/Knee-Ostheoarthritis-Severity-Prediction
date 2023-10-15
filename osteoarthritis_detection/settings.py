@@ -27,7 +27,7 @@ DEBUG = config('DEBUG',cast=bool)
 
 ALLOWED_HOSTS = []
 
-
+LOGOUT_REDIRECT_URL = '/'
 # Application definition
 
 INSTALLED_APPS = [

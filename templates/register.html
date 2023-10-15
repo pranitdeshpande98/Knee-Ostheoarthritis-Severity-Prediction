@@ -1,0 +1,373 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Osteo Arthritis Severity Detection System</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <link rel="stylesheet" type="text/css" href="path/to/sweetalert2.css">
+  <script type="text/javascript" src="path/to/sweetalert2.js"></script>
+  
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'assts/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{%static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Medilab
+  * Updated: Sep 18 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Top Bar ======= -->
+  <div id="topbar" class="d-flex align-items-center fixed-top">
+    <div class="container d-flex justify-content-between">
+      <div class="contact-info d-flex align-items-center">
+        <i class="bi bi-envelope"></i> <a href="mailto:contact@example.com">pranitd1@umbc.edu</a>
+        <i class="bi bi-phone"></i> +1 667 464 5415
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo me-auto"><a href="index.html">OsteoArthoScan</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+          <li><a class="nav-link scrollto" href="#faq">FAQs</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+       <a href="#appointment" class="appointment-btn scrollto"><span class="d-none d-md-inline">Login</a>
+    </div>
+  </header><!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center">
+    <div class="container">
+      <h1>Welcome to <br>
+        OsteoArthoScan</h1>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+    <!-- ======= Appointment Section ======= -->
+    <section id="appointment" class="appointment section-bg">
+        <div class="text-center">
+            <h1 style="font-weight: bold;">You have registered successfully</h1>
+          </div>
+          <br><br>
+      <div class="container">
+        <div class="section-title">
+          <h2>Login</h2>
+          <p></p>
+        </div>
+
+        <form action="{% url 'user_login' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-md-9 form-group mt-3 mt-md-0 login">
+              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
+              <br>
+              <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+            </div>
+            <br>
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-1">
+                  <button type="submit" class="btn btn-primary btn-block" id="loginButton">Login</button>
+                </div>
+                <div class="col-4 text-right">
+                  <a href="{% url 'forgot_password' %}" class="btn btn-link btn-gap">Forgot Password</a>
+                </div>
+              </div>
+            </div>
+          </form>
+          
+      </div>
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const loginForm = document.querySelector("form");
+        const emailInput = loginForm.querySelector('input[name="email"]');
+        const passwordInput = loginForm.querySelector('input[name="password"]');
+        const loginButton = loginForm.querySelector('#loginButton');
+      
+        loginForm.addEventListener("submit", function (e) {
+          e.preventDefault(); // Prevent the default form submission
+      
+          // Check if any of the fields are blank
+          if (!emailInput.value.trim() || !passwordInput.value.trim()) {
+            // Display an error message using SweetAlert for client-side validation
+            Swal.fire("Error", "Please enter your email and password", "error");
+          } else {
+            // If all client-side validation passes, submit the form
+            const formData = new FormData(loginForm);
+            fetch(loginForm.action, {
+              method: 'POST',
+              body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                // Login successful, display success message
+                Swal.fire("Success", data.message, "success").then(() => {
+                  // If the user clicks OK, redirect to another page
+                  window.location.href = '/dashboard/';  // Update this URL as needed
+                });
+              } else {
+                // Handle server-side errors and display them using SweetAlert
+                Swal.fire("Error", data.message, "error");
+              }
+            })
+            .catch(error => {
+              // Handle fetch error, if any
+              Swal.fire("Error", "An error occurred while processing your request", "error");
+            });
+          }
+        });
+      });
+      
+        </script>
+
+    <!-- ======= Frequently Asked Questions Section ======= -->
+    <section id="faq" class="faq section-bg">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Frequently Asked Questions</h2>
+        </div>
+
+        <div class="faq-list">
+          <ul>
+            <li data-aos="fade-up">
+              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapse" data-bs-target="#faq-list-1">
+                What is OsteoArthoScan, and how does it work and How accurate is OsteoArthoScan? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-1" class="collapse show" data-bs-parent=".faq-list">
+                <p>
+                  OsteoArthoScan is an advanced system with an accuracy rate of approximately 69% that 
+                  utilizes machine learning and medical imaging to detect and assess the 
+                  severity of osteoarthritis in the knee. It works by allowing users to upload their knee 
+                  images, which are then analyzed by our algorithms to provide a severity assessment.
+                </p>
+              </div>
+            </li>
+
+            <li data-aos="fade-up" data-aos-delay="100">
+              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-2" class="collapsed">
+                Is my data secure when using OsteoArthoScan? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-2" class="collapse" data-bs-parent=".faq-list">
+                <p>
+                  Yes, we prioritize the security and privacy of your data. OsteoArthoScan follows stringent data protection measures and complies 
+                  with data privacy regulations to ensure the confidentiality and security of your information.
+              </div>
+            </li>
+
+            <li data-aos="fade-up" data-aos-delay="200">
+              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-3" class="collapsed">
+                Are there any specific image requirements for the knee scans? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-3" class="collapse" data-bs-parent=".faq-list">
+                <p>
+                  We recommend providing clear and high-quality knee images for the most accurate assessment. 
+                  Ensure that your image is well-lit, in focus, and captures the entire knee joint area.
+                </p>
+              </div>
+            </li>
+
+            <li data-aos="fade-up" data-aos-delay="300">
+              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-4" class="collapsed">
+                How do I get started with OsteoArthoScan? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-4" class="collapse" data-bs-parent=".faq-list">
+                <p>
+                  Getting started is easy! Simply create an account on our platform, upload your knee image, and our system will take care of the rest. 
+                  Your severity report will be available for review within a short timeframe.
+                </p>
+              </div>
+            </li>
+
+            <li data-aos="fade-up" data-aos-delay="400">
+              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-5" class="collapsed"> What should I do if I have questions or encounter issues while using OsteoArthoScan?
+                 <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-5" class="collapse" data-bs-parent=".faq-list">
+                <p>
+                  If you have any questions or encounter issues, please feel free to reach out to our support team. We are here to assist you and provide the support you need.
+                </p>
+              </div>
+            </li>
+
+          </ul>
+        </div>
+
+      </div>
+    </section><!-- End Frequently Asked Questions Section -->
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Contact</h2>
+        </div>
+      </div>
+
+      <div>
+        <iframe style="border:0; width: 100%; height: 350px;" src="https://www.google.com/maps/embed/v1/place?q=University+of+Maryland,+Baltimore+County,+1000+Hilltop+Cir,+Baltimore,+MD+21250&key=AIzaSyCZXjUqYpMbpgBYO9WtLsz59-H5QjB-HKQ"
+        frameborder="0" allowfullscreen></iframe>
+      </div>
+
+      <div class="container">
+        <div class="row mt-5">
+
+          <div class="col-lg-4">
+            <div class="info">
+              <div class="address">
+                <i class="bi bi-geo-alt"></i>
+                <h4>Location:</h4>
+                <p>1000 Hilltop Circle, Baltimore, MD 21250</p>
+              </div>
+
+              <div class="email">
+                <i class="bi bi-envelope"></i>
+                <h4>Email:</h4>
+                <p>info@example.com</p>
+              </div>
+
+              <div class="phone">
+                <i class="bi bi-phone"></i>
+                <h4>Call:</h4>
+                <p>+1 5589 55488 55s</p>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="col-lg-8 mt-5 mt-lg-0">
+
+            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                </div>
+              </div>
+              <div class="form-group mt-3">
+                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+              </div>
+              <div class="form-group mt-3">
+                <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+              </div>
+              <div class="my-3">
+                <div class="loading">Loading</div>
+                <div class="error-message"></div>
+                <div class="sent-message">Your message has been sent. Thank you!</div>
+              </div>
+              <div class="text-center"><button type="submit">Send Message</button></div>
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Contact Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6 footer-contact">
+            <h3>OsteoArthoScan</h3>
+            <p>
+              1000 Hilltop Circle <br>
+              Baltimore, MD 21227<br>
+              United States <br><br>
+              <strong>Phone:</strong> +1 5589 55488 55<br>
+              <strong>Email:</strong> info@example.com<br>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container d-md-flex py-4">
+
+      <div class="me-md-auto text-center text-md-start">
+        <div class="copyright">
+          &copy; Copyright <strong><span>Team 2</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+          <!-- All the links in the footer should remain intact. -->
+          <!-- You can delete the links only if you purchased the pro version. -->
+          <!-- Licensing information: https://bootstrapmade.com/license/ -->
+          <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/ -->
+          Designed by Team 2
+        </div>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+  <script>
+    function displaySweetAlert(message, type, duration = 4000) {
+        Swal.fire({
+            title: message,
+            icon: type,
+            showConfirmButton: false,
+            timer: duration,
+        });
+    }
+</script>
+
+</body>
+
+</html>

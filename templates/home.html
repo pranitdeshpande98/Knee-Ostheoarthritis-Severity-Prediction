@@ -10,7 +10,9 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
+  <link rel="stylesheet" type="text/css" href="path/to/sweetalert2.css">
+  <script type="text/javascript" src="path/to/sweetalert2.js"></script>
+  
   <!-- Favicons -->
   <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
   <link href="{% static 'assts/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
@@ -50,12 +52,18 @@
       </div>
     </div>
   </div>
+<!-- Include SweetAlert JavaScript and CSS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<!-- Your HTML registration form -->
+<!-- Include SweetAlert JavaScript and CSS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
 
-      <h1 class="logo me-auto"><a href="index.html">OsteoArthoScan</a></h1>
+      <h1 class="logo me-auto"><a href='/'>OsteoArthoScan</a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
@@ -251,114 +259,203 @@
       </div>
     </section><!-- End Services Section -->
 
-    <!-- ======= Appointment Section ======= -->
-    <section id="appointment" class="appointment section-bg">
-      <div class="container">
-
-        <div class="section-title">
+<!-- ======= Appointment Section ======= -->
+<section id="appointment" class="appointment section-bg">
+  <div class="container">
+      <div class="section-title">
           <h2>Login</h2>
           <p></p>
-        </div>
-
-        <form action="{% url 'login' %}" method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-            <div class="col-md-9 form-group mt-3 mt-md-0 login">
-              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
-              <br>
-              <input type="password" id="password" class="form-control" placeholder = "Password">
-  
-            </div>
-            <br>
-            <div class="container">
-              <div class="row justify-content-center">
-                  <div class="col-1">
-                    <input type="submit" class="btn btn-primary btn-block" value="Login">
-                  </div>
-                  <div class="col-4 text-right">
-                    <a href="{% url 'forgot_password' %}" class="btn btn-link btn-gap">Forgot Password</a>
-                  </div>
-              </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    {% include 'alert.html' %}
-            </div>
-            </div>
-        </form>
-
       </div>
-    </section><!-- End Appointment Section -->
 
-    <!-- ======= Appointment Section ======= -->
-    <section id="register" class="appointment section-bg">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>Register</h2>
-          <p class="text-center">Please fill this form to get yourself onboarded to OsteoArthoScan</p>
-          <p></p>
-        </div>
-
-        <form action="{% url 'dashboard' %}" method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="row">
-              <div class="col-md-4 form-group">
-                  <label for="{{ form.name.id_for_label }}">Name:</label>
-                  <input type="text" name="name" class="form-control" id="{{ form.name.id_for_label }}" placeholder="Your Name">
-                  {{ form.name.errors }}
-              </div>
-              <div class="col-md-4 form-group mt-3 mt-md-0">
-                  <label for="{{ form.email.id_for_label }}">Email:</label>
-                  <input type="email" class="form-control" name="email" id="{{ form.email.id_for_label }}" placeholder="Your Email">
-                  {{ form.email.errors }}
-              </div>
-              <div class="col-md-4 form-group mt-3 mt-md-0">
-                  <label for="{{ form.phone.id_for_label }}">Phone:</label>
-                  <input type="tel" class="form-control" name="phone" id="{{ form.phone.id_for_label }}" placeholder="Your Phone">
-                  {{ form.phone.errors }}
-              </div>
-          </div>
-          <div class="row">
-              <div class="col-md-4 form-group mt-3">
-                  <label for="{{ form.age.id_for_label }}">Age:</label>
-                  <input type="number" name="age" class="form-control age" id="{{ form.age.id_for_label }}" placeholder="Age">
-                  {{ form.age.errors }}
-              </div>
-              <div class="col-md-4 form-group mt-3">
-                  <label for="{{ form.gender.id_for_label }}">Gender:</label>
-                  <select name="gender" id="{{ form.gender.id_for_label }}" class="form-select">
-                      <option value="">Select Gender</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Others">Others</option>
-                  </select>
-                  {{ form.gender.errors }}
-              </div>
-              <div class="col-md-4 form-group mt-3">
-                  <label for="{{ form.password.id_for_label }}">Password:</label>
-                  <input type="password" name="password" class="form-control" id="{{ form.password.id_for_label }}" placeholder="Password">
-                  {{ form.password.errors }}
-              </div>
-          </div>
+      <form action="{% url 'user_login' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="col-md-9 form-group mt-3 mt-md-0 login">
+          <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
           <br>
-          <div class="text-center">
-              <input type="submit" class="btn btn-primary btn-block" value="Register">
-          </div>
-          <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    {% include 'alert.html' %}
-            </div>
-            </div>
+          <input type="password" name="password" id="password" class="form-control" placeholder="Password">
         </div>
-
+        <br>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-1">
+              <button type="submit" class="btn btn-primary btn-block" id="loginButton">Login</button>
+            </div>
+            <div class="col-4 text-right">
+              <a href="{% url 'forgot_password' %}" class="btn btn-link btn-gap">Forgot Password</a>
+            </div>
+          </div>
+        </div>
       </form>
       
+  </div>
+</section>
+<!-- End Appointment Section -->
 
+<!-- HTML form as you provided -->
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+  const loginForm = document.querySelector("form");
+  const emailInput = loginForm.querySelector('input[name="email"]');
+  const passwordInput = loginForm.querySelector('input[name="password"]');
+  const loginButton = loginForm.querySelector('#loginButton');
+
+  loginForm.addEventListener("submit", function (e) {
+    e.preventDefault(); // Prevent the default form submission
+
+    // Check if any of the fields are blank
+    if (!emailInput.value.trim() || !passwordInput.value.trim()) {
+      // Display an error message using SweetAlert for client-side validation
+      Swal.fire("Error", "Please enter your email and password", "error");
+    } else {
+      // If all client-side validation passes, submit the form
+      const formData = new FormData(loginForm);
+      fetch(loginForm.action, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Login successful, display success message
+          Swal.fire("Success", data.message, "success").then(() => {
+            // If the user clicks OK, redirect to another page
+            window.location.href = '/dashboard/';  // Update this URL as needed
+          });
+        } else {
+          // Handle server-side errors and display them using SweetAlert
+          Swal.fire("Error", data.message, "error");
+        }
+      })
+      .catch(error => {
+        // Handle fetch error, if any
+        Swal.fire("Error", "An error occurred while processing your request", "error");
+      });
+    }
+  });
+});
+
+  </script>
+  
+  
+<!-- Your HTML registration form -->
+<section id="register" class="appointment section-bg">
+  <div class="container">
+    <div class="section-title">
+      <h2>Register</h2>
+      <p class="text-center">Please fill this form to get yourself onboarded to OsteoArthoScan</p>
+      <p></p>
+    </div>
+
+    <form action="{% url 'register' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-4 form-group">
+          <label for="{{ form.name.id_for_label }}">Name:</label>
+          <input type="text" name="name" class="form-control" id="{{ form.name.id_for_label }}" placeholder="Your Name">
+        </div>
+        <div class="col-md-4 form-group mt-3 mt-md-0">
+          <label for="{{ form.email.id_for_label }}">Email:</label>
+          <input type="email" class="form-control" name="email" id="{{ form.email.id_for_label }}" placeholder="Your Email">
+          {{ form.email.errors }}
+        </div>
+        <div class="col-md-4 form-group mt-3 mt-md-0">
+          <label for {{ form.phone.id_for_label }}">Phone:</label>
+          <input type="tel" class="form-control" name="phone" id="{{ form.phone.id_for_label }}" placeholder="Your Phone">
+        </div>
       </div>
-    </section><!-- End Appointment Section -->
-
-
-
+      <div class="row">
+        <div class="col-md-4 form-group mt-3">
+          <label for="{{ form.age.id_for_label }}">Age:</label>
+          <input type="number" name="age" class="form-control age" id="{{ form.age.id_for_label }}" placeholder="Age">
+        </div>
+        <div class="col-md-4 form-group mt-3">
+          <label for="{{ form.gender.id_for_label }}">Gender:</label>
+          <select name="gender" id="{{ form.gender.id_for_label }}" class="form-select">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+        <div class="col-md-4 form-group mt-3">
+          <label for="{{ form.password.id_for_label }}">Password:</label>
+          <input type="password" name="password" class="form-control" id="{{ form.password.id_for_label }}" placeholder="Password">
+        </div>
+      </div>
+      <br>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary btn-block">Register</button>
+      </div>
+    </form>
+    <br>
+    <p class="text-center" class="nav-link scrollto">If you already have an account, <a href="#appointment">login</a> instead.</p>
+  </div>
+</section>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const registrationForm = document.querySelector("#register form");
+  
+    registrationForm.addEventListener("submit", function (e) {
+      // Prevent the form from submitting normally
+      e.preventDefault();
+  
+      // Get references to the form fields
+      const nameInput = registrationForm.querySelector('input[name="name"]');
+      const emailInput = registrationForm.querySelector('input[name="email"]');
+      const phoneInput = registrationForm.querySelector('input[name="phone"]');
+      const ageInput = registrationForm.querySelector('input[name="age"]');
+      const genderInput = registrationForm.querySelector('select[name="gender"]');
+      const passwordInput = registrationForm.querySelector('input[name="password"]');
+  
+      // Check if any of the required fields are blank
+      if (
+        !nameInput.value.trim() ||
+        !emailInput.value.trim() ||
+        !phoneInput.value.trim() ||
+        !ageInput.value.trim() ||
+        genderInput.value === "" ||
+        !passwordInput.value.trim()
+      ) {
+        e.preventDefault();
+        // Display an error message using SweetAlert for client-side validation
+        Swal.fire("Error", "Please fill in all required fields", "error");
+      } else {
+        // If all client-side validation passes, submit the form
+        const formData = new FormData(registrationForm);
+        fetch(registrationForm.action, {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Registration successful, display success message
+            Swal.fire("Success", "Registration successful!", "success").then(() => {
+              // If the user clicks OK, redirect to another page
+              window.location.href = '/register_success';
+            });
+          } else {
+            // Handle server-side errors and display them using SweetAlert
+            Swal.fire("Error", data.error, "error");
+            // If you have form-specific errors, you can display them too
+            for (const field in data.form_errors) {
+              const errorMessage = data.form_errors[field].join(', ');
+              Swal.fire("Error", errorMessage, "error");
+              registrationForm.reset(); // Reset the form
+            }
+          }
+        })
+        .catch(error => {
+          // Handle fetch error, if any
+          Swal.fire("Error", "An error occurred while processing your request", "error");
+          registrationForm.reset(); // Reset the form
+        });
+      }
+    });
+  });
+  </script>
+  
 
     <!-- ======= Frequently Asked Questions Section ======= -->
     <section id="faq" class="faq section-bg">

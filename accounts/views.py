@@ -43,6 +43,7 @@ def register(request):
                 except IntegrityError as e:
                     return JsonResponse({'success': False, 'error': 'An error occurred while creating your account. Please try again.'})
         else:
+            print(form.errors)
             errors = dict(form.errors.items())
             return JsonResponse({'success': False, 'error': 'Please correct the errors in the form', 'form_errors': errors})
     else:
@@ -58,7 +59,7 @@ def register_success(request):
     return render(request, 'register.html')
 
 def forgot_password(request):
-    pass
+    return render(request,'forgot_password.html')
 
 @login_required(login_url = 'home')
 def dashboard(request):

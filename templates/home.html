@@ -9,9 +9,8 @@
   <title>Osteo Arthritis Severity Detection System</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-  <link rel="stylesheet" type="text/css" href="path/to/sweetalert2.css">
-  <script type="text/javascript" src="path/to/sweetalert2.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
   
   <!-- Favicons -->
   <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
@@ -157,8 +156,6 @@
 
           <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
             <h3>What is osteoarthritis?</h3>
-            <p>Esse voluptas cumque vel exercitationem. Reiciendis est hic accusamus. Non ipsam et sed minima temporibus laudantium. Soluta voluptate sed facere corporis dolores excepturi. Libero laboriosam sint et id nulla tenetur. Suscipit aut voluptate.</p>
-
             <div class="icon-box">
               <div class="icon"><i class="bx bx-accessibility"></i></div>
               <h4 class="title">Symptoms</h4>
@@ -556,13 +553,13 @@
               <div class="email">
                 <i class="bi bi-envelope"></i>
                 <h4>Email:</h4>
-                <p>info@example.com</p>
+                <p>teamosteoarthoscan@gmail.com</p>
               </div>
 
               <div class="phone">
                 <i class="bi bi-phone"></i>
                 <h4>Call:</h4>
-                <p>+1 5589 55488 55s</p>
+                <p>+1 667 464 5415</p>
               </div>
 
             </div>
@@ -571,7 +568,7 @@
 
           <div class="col-lg-8 mt-5 mt-lg-0">
 
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+            <form id="contact-form" form action="{% url 'contact_form' %}" method="post">
               <div class="row">
                 <div class="col-md-6 form-group">
                   <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
@@ -586,12 +583,8 @@
               <div class="form-group mt-3">
                 <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
               </div>
-              <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
-              </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
+              <br>
+              <div class="text-center"><button type="submit" class="btn btn-primary btn-block">Send Message</button></div>
             </form>
 
           </div>
@@ -600,7 +593,45 @@
 
       </div>
     </section><!-- End Contact Section -->
-
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("#contact-form");
+    
+        form.addEventListener("submit", function (e) {
+          e.preventDefault(); // Prevent the default form submission
+    
+          // Show a loading spinner while the form is being submitted
+          const loadingSpinner = document.createElement("div");
+          loadingSpinner.classList.add("loading");
+          form.appendChild(loadingSpinner);
+    
+          // Simulate sending the form data to the server
+          fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+          })
+          .then(response => response.json())
+          .then(data => {
+            // Remove the loading spinner
+            loadingSpinner.remove();
+    
+            if (data.success) {
+              // Message sent successfully, display the success message
+              Swal.fire("Success", "Your message has been sent. Thank you!", "success");
+   
+              // Clear the form fields if needed
+              form.reset();
+            } else {
+              // Handle server-side errors if any and display an error message
+              Swal.fire("Error", "There was an error sending your message. Please try again.", "error");
+            }
+          });
+        });
+      });
+    </script>
+    
+    
+    
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

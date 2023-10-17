@@ -88,7 +88,7 @@ def forgot_password(request):
     return render(request, 'forgot_password.html')
 
 
-@login_required(login_url = 'user_login')
+@login_required(login_url='/')
 def dashboard(request):
     return render(request,'inner-page.html')
 
@@ -116,8 +116,11 @@ def reset_password_validate(request, uidb64, token):
         # Pass uidb64 and token as query parameters in the redirect
         reset_password_url = reverse('reset_password')
         reset_password_url += f'?uidb64={uidb64}&token={token}'
-
-        return HttpResponseRedirect(reset_password_url)
+        context ={
+            'uidb64': uidb64,
+            'token' : token,
+        }
+        return HttpResponseRedirect(reset_password_url, context)
     else:
         messages.error(request, 'Invalid reset link or token')
         return redirect('/')
@@ -125,6 +128,7 @@ def reset_password_validate(request, uidb64, token):
 def reset_password(request):
     uidb64 = request.GET.get('uidb64')
     token = request.GET.get('token')
+    
     if not uidb64 or not token:
         # Handle the case when query parameters are missing
         messages.error(request, 'Invalid reset link or token')
@@ -132,14 +136,16 @@ def reset_password(request):
 
     uid = urlsafe_base64_decode(uidb64).decode()
     user = User.objects.get(pk=uid)
-
+    
     if not default_token_generator.check_token(user, token):
         # Handle the case when the token is invalid
         messages.error(request, 'Invalid reset link or token')
         return redirect('/')
+
     if request.method == 'POST':
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
+
         if password == confirm_password:
             user.set_password(password)
             user.is_active = True
@@ -151,9 +157,6 @@ def reset_password(request):
             return JsonResponse({'success': False, 'message': 'Passwords do not match'})
 
     return render(request, 'reset_password.html')
-
-
-
 
 
 from django.conf import settings

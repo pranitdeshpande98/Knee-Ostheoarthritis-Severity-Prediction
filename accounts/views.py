@@ -114,47 +114,26 @@ def reset_password_validate(request, uidb64, token):
         messages.info(request, 'Please reset your password')
 
         # Pass uidb64 and token as query parameters in the redirect
-        reset_password_url = reverse('reset_password')
-        reset_password_url += f'?uidb64={uidb64}&token={token}'
-        context ={
-            'uidb64': uidb64,
-            'token' : token,
-        }
-        return HttpResponseRedirect(reset_password_url, context)
+        return redirect('reset_password')
     else:
         messages.error(request, 'Invalid reset link or token')
         return redirect('/')
 
 def reset_password(request):
-    uidb64 = request.GET.get('uidb64')
-    token = request.GET.get('token')
-    
-    if not uidb64 or not token:
-        # Handle the case when query parameters are missing
-        messages.error(request, 'Invalid reset link or token')
-        return redirect('/')
-
-    uid = urlsafe_base64_decode(uidb64).decode()
-    user = User.objects.get(pk=uid)
-    
-    if not default_token_generator.check_token(user, token):
-        # Handle the case when the token is invalid
-        messages.error(request, 'Invalid reset link or token')
-        return redirect('/')
-
     if request.method == 'POST':
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
-
         if password == confirm_password:
+            pk = request.session.get('uid')
+            user = User.objects.get(pk = pk)
             user.set_password(password)
             user.is_active = True
             user.save()
             messages.success(request, 'Password reset successfully')
-            return JsonResponse({'success': True})  # Successful password reset
+            return redirect('/')
         else:
             messages.error(request, 'Passwords do not match!')
-            return JsonResponse({'success': False, 'message': 'Passwords do not match'})
+            return redirect('reset_password')
 
     return render(request, 'reset_password.html')
 

@@ -12,6 +12,20 @@ from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import matplotlib.cm as cm
+import matplotlib.pyplot as plt
+import numpy as np
+import tensorflow as tf
+from PIL import Image
+from .models import PredictionRun
+from datetime import datetime
+import os
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.conf import settings
+from django.core.mail import EmailMessage
+import matplotlib
+matplotlib.use("Agg")
 
 def register(request):
     if request.method == 'POST':
@@ -95,13 +109,6 @@ def dashboard(request):
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
-
-from django.urls import reverse
-
-from django.shortcuts import redirect
-
-from django.http import HttpResponseRedirect
-
 def reset_password_validate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -137,10 +144,6 @@ def reset_password(request):
 
     return render(request, 'reset_password.html')
 
-
-from django.conf import settings
-from django.core.mail import EmailMessage
-
 @csrf_exempt
 def contact_form(request):
     if request.method == 'POST':
@@ -164,4 +167,158 @@ def contact_form(request):
         return JsonResponse({'success': True})
     return JsonResponse({'success': False})
 
+class_names = ["Healthy", "Doubtful", "Minimal", "Moderate", "Severe"]
+
+def make_gradcam_heatmap(grad_model, img_array, pred_index=None):
+    with tf.GradientTape() as tape:
+        last_conv_layer_output, preds = grad_model(img_array)
+        if pred_index is None:
+            pred_index = tf.argmax(preds[0])
+        class_channel = preds[:, pred_index]
+
+    grads = tape.gradient(class_channel, last_conv_layer_output)
+
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+
+    last_conv_layer_output = last_conv_layer_output[0]
+    heatmap = last_conv_layer_output @ pooled_grads[..., tf.newaxis]
+    heatmap = tf.squeeze(heatmap)
+
+    heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
+    return heatmap.numpy()
+
+def save_and_display_gradcam(img, heatmap, alpha=0.4):
+    heatmap = np.uint8(255 * heatmap)
+
+    jet = cm.get_cmap("jet")
+
+    jet_colors = jet(np.arange(256))[:, :3]
+    jet_heatmap = jet_colors[heatmap]
+
+    jet_heatmap = tf.keras.preprocessing.image.array_to_img(jet_heatmap)
+    image_width, image_height = img.size
+    jet_heatmap = jet_heatmap.resize((image_width, image_height))
+    jet_heatmap = tf.keras.preprocessing.image.img_to_array(jet_heatmap)
+
+    superimposed_img = jet_heatmap * alpha + img
+    superimposed_img = tf.keras.preprocessing.image.array_to_img(
+        superimposed_img
+    )
+
+    return superimposed_img
+
+def generate_run_id():
+    now = datetime.now()
+    timestamp = now.strftime("%Y%m%d%H%M%S")
+    return timestamp
+
+def generate_bar_chart(y_pred):
+    fig, ax = plt.subplots(figsize=(5, 2))
+    ax.barh(class_names, y_pred, height=0.55, align="center")
+    for i, (c, p) in enumerate(zip(class_names, y_pred)):
+        ax.text(p + 2, i - 0.2, f"{p:.2f}%")
+    ax.grid(axis="x")
+    ax.set_xlim([0, 120])
+    ax.set_xticks(range(0, 101, 20))
+    return fig
+
+import streamlit as st
+def prediction(request):
+    y_pred = None
+    if request.method == "POST" and request.FILES.get("image"):
+        # Load the model (replace with the path to your model)
+        model = tf.keras.models.load_model("model_Xception_ft.hdf5")
+        target_size = (224, 224)
+
+# Process the uploaded image
+        uploaded_image = request.FILES["image"]
+        img = Image.open(uploaded_image)
+        img = img.resize(target_size)
+        img = img.convert("RGB")  # Ensure the image is in RGB format
+
+# Convert the image to a NumPy array
+        img_array = np.array(img)
+
+# Check the shape of img_array
+        print("Image shape:", img_array.shape)
+
+# Perform the prediction
+        img_array = np.expand_dims(img_array, axis=0)
+        img_array = tf.keras.applications.xception.preprocess_input(img_array)
+        y_pred = model.predict(img_array)
+
+        y_pred = 100 * y_pred[0]  # Only access elements if y_pred is not None
+        print(y_pred)
+        number = np.where(y_pred == np.amax(y_pred))
+        probability = np.amax(y_pred)
+        grade = str(class_names[np.amax(number)])
+        value=f"{class_names[np.amax(number)]} - {probability:.2f}%",
+        print(value)
+
+        # Generate Grad-CAM heatmap
+        grad_model = tf.keras.models.clone_model(model)
+        grad_model.set_weights(model.get_weights())
+        grad_model.layers[-1].activation = None
+        grad_model = tf.keras.models.Model(
+            inputs=[grad_model.inputs],
+            outputs=[
+                grad_model.get_layer("global_average_pooling2d_1").input,
+                grad_model.output,
+            ],
+        )
+        heatmap = make_gradcam_heatmap(grad_model, img_array)
+        heatmap_img = save_and_display_gradcam(img, heatmap)
+
+        # Create a unique run_id based on the date and timestamp
+        run_id = generate_run_id()
+
+        # Save prediction results in the database
+        prediction_run = PredictionRun(
+            user=request.user,
+            run_id=run_id,
+            severity_grade=grade,
+        )
+        prediction_run.input_image.save(f"{run_id}_{uploaded_image}", uploaded_image)
+        # Convert the heatmap image to bytes
+        heatmap_byte_array = BytesIO()
+        heatmap_img.save(heatmap_byte_array, format='JPEG')
+        heatmap_byte_array.seek(0)
+
+# Create an InMemoryUploadedFile
+        heatmap_file = InMemoryUploadedFile(
+            heatmap_byte_array, None, f"{run_id}_heatmap.jpg", 'image/jpeg',
+            heatmap_byte_array.tell(), None
+        )
+
+# Save the heatmap to your model
+        prediction_run.gradcam_heatmap.save(f"{run_id}_heatmap.jpg", heatmap_file)
+# Save Grad-CAM heatmap
+#        heatmap_img_path = os.path.join(settings.MEDIA_ROOT, f"{run_id}_heatmap.jpg")
+#        heatmap_img.save(heatmap_img_path)
+
+# Save the input image
+#        input_image_path = os.path.join(settings.MEDIA_ROOT, f"{run_id}_{uploaded_image}")
+#        uploaded_image.seek(0)  # Ensure the file pointer is at the beginning
+#        with open(input_image_path, 'wb') as f:
+#            f.write(uploaded_image.read())
+
+        # Generate and save the bar chart image
+        bar_chart = generate_bar_chart(y_pred)
+        bar_chart_img_path = os.path.join(settings.MEDIA_ROOT, f"analysis_plots/{run_id}_bar_chart.jpg")
+        bar_chart.savefig(bar_chart_img_path, bbox_inches='tight', pad_inches=0)
+
+        prediction_run.bar_chart_analysis.name = f"analysis_plots/{run_id}_bar_chart.jpg"
+        prediction_run.save()
+
+# Prepare JSON response for displaying results
+        response_data = {
+            "severity_grade": grade,
+            "probability": value,
+            "run_id": run_id,
+            "heatmap_url": prediction_run.gradcam_heatmap.url,
+            "bar_chart_url": prediction_run.bar_chart_analysis.url,
+        }
+        return JsonResponse(response_data)
+
+    return render(request, 'inner-page.html')
 

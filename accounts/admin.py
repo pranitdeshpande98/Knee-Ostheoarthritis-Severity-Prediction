@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User
+from .models import PredictionRun, User
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'name', 'phone', 'age', 'gender', 'is_active', 'is_staff')
@@ -21,3 +21,4 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(PredictionRun)

@@ -61,3 +61,16 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+
+class PredictionRun(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Link to your User model
+    run_id = models.CharField(max_length=255, unique=True)  # Combination of date and timestamp
+    severity_grade = models.CharField(max_length=20)
+    input_image = models.ImageField(upload_to='uploaded_images/')
+    gradcam_heatmap = models.ImageField(upload_to='heatmaps/')
+    bar_chart_analysis = models.ImageField(upload_to='analysis_plots/')
+
+    def __str__(self):
+        return f"{self.user.email} - {self.run_id}"

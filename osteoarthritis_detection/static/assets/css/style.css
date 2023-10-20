@@ -595,7 +595,7 @@ section {
 /*--------------------------------------------------------------
 # Breadcrumbs
 --------------------------------------------------------------*/
-.breadcrumbs {
+.upload {
   padding: 20px 0;
   background-color: #f1f7fd;
   min-height: 40px;
@@ -603,24 +603,24 @@ section {
 }
 
 @media (max-width: 992px) {
-  .breadcrumbs {
+  .upload {
     margin-top: 100px;
   }
 }
 
-.breadcrumbs h2 {
+.upload h2 {
   font-size: 24px;
   font-weight: 300;
   margin: 0;
 }
 
 @media (max-width: 992px) {
-  .breadcrumbs h2 {
+  .upload h2 {
     margin: 0 0 10px 0;
   }
 }
 
-.breadcrumbs ol {
+.upload ol {
   display: flex;
   flex-wrap: wrap;
   list-style: none;
@@ -629,11 +629,11 @@ section {
   font-size: 14px;
 }
 
-.breadcrumbs ol li+li {
+.upload ol li+li {
   padding-left: 10px;
 }
 
-.breadcrumbs ol li+li::before {
+.upload ol li+li::before {
   display: inline-block;
   padding-right: 10px;
   color: #6c757d;
@@ -641,15 +641,15 @@ section {
 }
 
 @media (max-width: 768px) {
-  .breadcrumbs .d-flex {
+  .upload .d-flex {
     display: block !important;
   }
 
-  .breadcrumbs ol {
+  .upload ol {
     display: block;
   }
 
-  .breadcrumbs ol li {
+  .upload ol li {
     display: inline-block;
   }
 }

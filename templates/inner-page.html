@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Inner Page - Medilab Bootstrap Template</title>
+  <title>Dashboard</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -45,8 +45,8 @@
   <div id="topbar" class="d-flex align-items-center fixed-top">
     <div class="container d-flex justify-content-between">
       <div class="contact-info d-flex align-items-center">
-        <i class="bi bi-envelope"></i> <a href="mailto:contact@example.com">contact@example.com</a>
-        <i class="bi bi-phone"></i> +1 5589 55488 55
+        <i class="bi bi-envelope"></i> <a href="mailto:contact@example.com">teamosteoarthoscan@gmail.com</a>
+        <i class="bi bi-phone"></i> +1 667 464 5415
       </div>
     </div>
   </div>
@@ -61,9 +61,9 @@
 
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>
-          <li><a class="nav-link scrollto " href="#hero">Upload</a></li>
-          <li><a class="nav-link scrollto" href="#about">Previous Runs</a></li>
-          <li><a class="nav-link scrollto" href="#contact">Profile</a></li>
+          <li><a class="nav-link scrollto" href="#upload">Upload</a></li>
+          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+          <li><a class="nav-link scrollto" href="#faq">FAQs</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -75,29 +75,59 @@
 
   <main id="main">
 
-    <!-- ======= Breadcrumbs Section ======= -->
-    <section class="breadcrumbs">
-      <div class="container">
+<!-- ======= Services Section ======= -->
+<section id="upload" class="upload">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h2>Severity Analysis of Arthrosis in the Knee</h2>
+    </div>
+  </div>
 
-        <div class="d-flex justify-content-between align-items-center">
-          <h2>Inner Page</h2>
-          <ol>
-            <li><a href="/">Home</a></li>
-            <li>Inner Page</li>
-          </ol>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <form method="post" enctype="multipart/form-data" action="{% url 'prediction' %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="imageUpload" class="form-label">Choose X-ray image</label>
+            <input type="file" name="image" id="imageUpload" accept=".jpg, .jpeg, .png">
+          </div>
+          <button type="submit" class="btn btn-primary">Predict Arthrosis</button>
+        </form>
+
+        <!-- Display prediction results here -->
+        <div id="prediction-results">
+          {% if prediction %}
+            <h3>Prediction:</h3>
+            <p>Severity Grade: {{ prediction.severity_grade }} - {{ prediction.probability }}%</p>
+            <h3>Input Image:</h3>
+            <img src="{{ prediction.input_image.url }}" alt="Input Image">
+            <h3>Explainability:</h3>
+            <img src="{{ prediction.heatmap_url }}" alt="Heatmap">
+            <h3>Analysis:</h3>
+            <img src="{{ prediction.bar_chart_url }}" alt="Bar Chart">
+          {% endif %}
         </div>
-
       </div>
-    </section><!-- End Breadcrumbs Section -->
+    </div>
+  </div>
+</section>
 
-    <section class="inner-page">
-      <div class="container">
-        <p>
-          Example inner page template
-        </p>
-      </div>
-    </section>
 
+
+<!-- ======= Frequently Asked Questions Section ======= -->
+<section id="faq" class="faq section-bg">
+  
+
+</section><!-- End Frequently Asked Questions Section -->
+
+<!-- ======= Contact Section ======= -->
+<section id="contact" class="contact">
+
+
+</section><!-- End Contact Section -->
+
+    
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

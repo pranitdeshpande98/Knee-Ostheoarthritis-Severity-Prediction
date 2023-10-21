@@ -62,8 +62,8 @@
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>
           <li><a class="nav-link scrollto" href="#upload">Upload</a></li>
-          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-          <li><a class="nav-link scrollto" href="#faq">FAQs</a></li>
+          <li><a class="nav-link scrollto" href="#dashboard">Dashboard</a></li>
+          <li><a class="nav-link scrollto" href="#profile">Profile</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -77,54 +77,185 @@
 
 <!-- ======= Services Section ======= -->
 <section id="upload" class="upload">
-  <div class="container">
-    <div class="d-flex justify-content-between align-items-center">
-      <h2>Severity Analysis of Arthrosis in the Knee</h2>
-    </div>
-  </div>
-
-  <div class="container">
+  <div class="container text-center">
+    <h2><strong>Severity Analysis of Arthrosis in the Knee</strong></h2>
+    <br>
     <div class="row">
-      <div class="col-md-6">
-        <form method="post" enctype="multipart/form-data" action="{% url 'prediction' %}">
+      <div class="col-md-6 offset-md-3"> <!-- Center the message and button -->
+        <form id="prediction-form" method="post" enctype="multipart/form-data" action="{% url 'prediction' %}">
           {% csrf_token %}
           <div class="mb-3">
             <label for="imageUpload" class="form-label">Choose X-ray image</label>
             <input type="file" name="image" id="imageUpload" accept=".jpg, .jpeg, .png">
           </div>
-          <button type="submit" class="btn btn-primary">Predict Arthrosis</button>
+          <button type="submit" class="btn btn-primary" id="predict-button">Predict Arthrosis</button>
         </form>
-
-        <!-- Display prediction results here -->
-        <div id="prediction-results">
-          {% if prediction %}
-            <h3>Prediction:</h3>
-            <p>Severity Grade: {{ prediction.severity_grade }} - {{ prediction.probability }}%</p>
-            <h3>Input Image:</h3>
-            <img src="{{ prediction.input_image.url }}" alt="Input Image">
-            <h3>Explainability:</h3>
-            <img src="{{ prediction.heatmap_url }}" alt="Heatmap">
-            <h3>Analysis:</h3>
-            <img src="{{ prediction.bar_chart_url }}" alt="Bar Chart">
-          {% endif %}
+        <br>
+        <div id="spinner" class="spinner hidden">
+          <div class="double-bounce1"></div>
+          <div class="double-bounce2"></div>
         </div>
       </div>
+    </div>
+
+    <div id="prediction-results" style="display: none;">
+      <div class="col-md-12 text-center">
+        <h3>Prediction:</h3>
+        <p>Severity Grade: <strong><span id="severity-grade"></span></strong></p>
+      </div>
+      <div class="row">
+        <div class="col-md-6 text-center">
+          <h3>Explainability:</h3>
+          <img src="{{ prediction_run.gradcam_heatmap.url }}" id="heatmap-image" alt="Heatmap">
+        </div>
+        <div class="col-md-6 text-center">
+          <h3>Analysis:</h3>
+          <img src="{{ prediction_run.bar_chart_analysis.url }}" id="analysis-image" alt="Bar Chart">
+        </div>
+      </div>
+      <br>
+      <p> If you want to view the report click on the Dashboard</p>
     </div>
   </div>
 </section>
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> <!-- Include SweetAlert script -->
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const predictionForm = document.getElementById("prediction-form");
+    const predictButton = document.getElementById("predict-button");
+    const spinner = document.getElementById("spinner");
+    const predictionResults = document.getElementById("prediction-results");
+    const severityGrade = document.getElementById("severity-grade");
+    const heatmapImage = document.getElementById("heatmap-image");
+    const analysisImage = document.getElementById("analysis-image");
+
+    // Function to clear the page
+    function clearPage() {
+      severityGrade.textContent = "";
+      heatmapImage.src = "";
+      analysisImage.src = "";
+      predictionResults.style.display = "none";
+    }
+
+    // Add a click event listener to the button
+    predictButton.addEventListener('click', function () {
+      // Check if there's no uploaded image
+      if (!predictionForm.querySelector("input[type='file']").files[0]) {
+        // Display a SweetAlert with an error message
+        swal("Error", "Please choose an image to upload", "error");
+        return; // Stop further execution
+      }
+
+      // Clear the page
+      clearPage();
+
+      // Show the spinner
+      spinner.classList.remove('hidden');
+
+      // You can also hide the spinner after a certain time or after completing a task
+      setTimeout(function () {
+        spinner.classList.add('hidden');
+      }, 5000); // Example: hide the spinner after 5 seconds
+    });
+
+    predictionForm.addEventListener("submit", function (e) {
+      e.preventDefault();  // Prevent the default form submission behavior
+
+      // Clear the page
+      clearPage();
+
+      spinner.style.display = "block";  // Show the spinner
+
+      // Make an AJAX POST request to the prediction URL
+      fetch("/prediction/", {
+        method: "POST",
+        body: new FormData(predictionForm),
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        // Update the page with the prediction results
+        severityGrade.textContent = data.severity_grade;
+        heatmapImage.src = data.heatmap_url;
+        analysisImage.src = data.bar_chart_url;
+
+        // Show the prediction results
+        spinner.style.display = "none";  // Hide the spinner
+        predictionResults.style.display = "block";
+      })
+      .catch((error) => {
+        console.error(error);
+        swal("Error", "An error occurred while making the prediction.", "error");
+        spinner.style.display = "none";  // Hide the spinner on error
+      });
+    });
+  });
+</script>
 
 <!-- ======= Frequently Asked Questions Section ======= -->
-<section id="faq" class="faq section-bg">
-  
+<section id="dashboard" class="dashboard">
+  <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
+    <h3>What is osteoarthritis?</h3>
+    <div class="icon-box">
+      <div class="icon"><i class="bx bx-accessibility"></i></div>
+      <h4 class="title">Symptoms</h4>
+      <p class="description">The main symptoms of osteoarthritis are pain and sometimes stiffness in the affected joints. The pain tends to be worse when you move the joint or at the end of the day. Your joints may feel stiff after rest, but this usually wears off fairly quickly once you get moving. 
+        Symptoms may vary for no obvious reason. Or you may find that your symptoms vary depending on what you’re doing</p>
+    </div>
+
+    <div class="icon-box">
+      <div class="icon"><i class="bx bx-file-find"></i></div>
+      <h4 class="title">Causes</h4>
+      <p class="description">Osteoarthritis, often associated with aging, is influenced by various factors, 
+        including age, gender (more common in women), obesity, joint injuries, and abnormalities. Genetics can also play a role, 
+        with specific gene mutations causing early-onset osteoarthritis. Occasionally, it can result from other joint diseases like rheumatoid arthritis. 
+        Weather changes can affect symptoms but don't cause the condition, and while diet may influence symptoms, weight remains a primary factor in osteoarthritis risk.</p>
+    </div>
+
+    <div class="icon-box">
+      <div class="icon"><i class="bx bx-first-aid"></i></div>
+      <h4 class="title">Diagnosis</h4>
+      <p class="description">It’s important to get an accurate diagnosis if you think you have arthritis, as different types of arthritis often need very different treatments. 
+        The diagnosis of osteoarthritis is usually based on: 
+         your symptoms – how and when they started, how they’ve developed, how they affect your life, and any factors that make them better or worse 
+        a physical examination – your doctor will check for: tenderness over the joint creaking or grating of the joint – known as crepitus
+        bony swelling excess fluid restricted movement joint instability weakness or thinning of the muscles that support the joint.</p>
+    </div>
 
 </section><!-- End Frequently Asked Questions Section -->
 
 <!-- ======= Contact Section ======= -->
-<section id="contact" class="contact">
+<section id="profile" class="profile">
+  <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
+    <h3>What is osteoarthritis?</h3>
+    <div class="icon-box">
+      <div class="icon"><i class="bx bx-accessibility"></i></div>
+      <h4 class="title">Symptoms</h4>
+      <p class="description">The main symptoms of osteoarthritis are pain and sometimes stiffness in the affected joints. The pain tends to be worse when you move the joint or at the end of the day. Your joints may feel stiff after rest, but this usually wears off fairly quickly once you get moving. 
+        Symptoms may vary for no obvious reason. Or you may find that your symptoms vary depending on what you’re doing</p>
+    </div>
 
+    <div class="icon-box">
+      <div class="icon"><i class="bx bx-file-find"></i></div>
+      <h4 class="title">Causes</h4>
+      <p class="description">Osteoarthritis, often associated with aging, is influenced by various factors, 
+        including age, gender (more common in women), obesity, joint injuries, and abnormalities. Genetics can also play a role, 
+        with specific gene mutations causing early-onset osteoarthritis. Occasionally, it can result from other joint diseases like rheumatoid arthritis. 
+        Weather changes can affect symptoms but don't cause the condition, and while diet may influence symptoms, weight remains a primary factor in osteoarthritis risk.</p>
+    </div>
 
+    <div class="icon-box">
+      <div class="icon"><i class="bx bx-first-aid"></i></div>
+      <h4 class="title">Diagnosis</h4>
+      <p class="description">It’s important to get an accurate diagnosis if you think you have arthritis, as different types of arthritis often need very different treatments. 
+        The diagnosis of osteoarthritis is usually based on: 
+         your symptoms – how and when they started, how they’ve developed, how they affect your life, and any factors that make them better or worse 
+        a physical examination – your doctor will check for: tenderness over the joint creaking or grating of the joint – known as crepitus
+        bony swelling excess fluid restricted movement joint instability weakness or thinning of the muscles that support the joint.</p>
+    </div>
+
+    
 </section><!-- End Contact Section -->
 
     

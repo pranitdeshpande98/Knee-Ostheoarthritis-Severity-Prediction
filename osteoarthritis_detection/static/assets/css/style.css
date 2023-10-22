@@ -1784,3 +1784,9 @@ section {
   0%, 100% { transform: scale(0); }
   50% { transform: scale(1); }
 }
+
+/* Add to your CSS file */
+tbody tr:hover {
+  background-color: #e0e0e0;
+  transition: background-color 0.2s;
+}

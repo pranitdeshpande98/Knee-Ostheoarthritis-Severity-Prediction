@@ -10,7 +10,7 @@ from django.db import IntegrityError  # Import IntegrityError
 from django.contrib.auth import authenticate, login
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
@@ -25,6 +25,8 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.conf import settings
 from django.core.mail import EmailMessage
 import matplotlib
+from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 matplotlib.use("Agg")
 
 def register(request):
@@ -331,3 +333,50 @@ def prediction(request):
 
     return render(request, 'inner-page.html')
 
+def dashboard_popup(request):
+    # Get all prediction runs for the current user
+    prediction_runs = PredictionRun.objects.filter(user=request.user)
+
+    # Sort by severity grade (default sorting)
+    sort_by = request.GET.get('sort', 'severity_grade')
+    if sort_by == 'run_id':
+        prediction_runs = prediction_runs.order_by('run_id')
+
+    # Filter by grade and run_id
+    filter_grade = request.GET.get('filter_grade')
+    filter_run_id = request.GET.get('filter_run_id')
+
+    if filter_grade:
+        prediction_runs = prediction_runs.filter(severity_grade=filter_grade)
+
+    if filter_run_id:
+        prediction_runs = prediction_runs.filter(run_id=filter_run_id)
+
+    # Implement searching
+    search_query = request.GET.get('search')
+    if search_query:
+        prediction_runs = prediction_runs.filter(
+            Q(severity_grade__icontains=search_query) |
+            Q(run_id__icontains=search_query)
+        )
+
+    # Paginate the results (show 5 items per page)
+    paginator = Paginator(prediction_runs, 5)
+    page = request.GET.get('page')
+    try:
+        prediction_runs = paginator.page(page)
+    except PageNotAnInteger:
+        prediction_runs = paginator.page(1)
+    except EmptyPage:
+        prediction_runs = paginator.page(paginator.num_pages)
+
+    context = {
+        'prediction_runs': prediction_runs,
+    }
+
+    return render(request, 'dashboard_popup.html', context)
+
+
+
+def generate_pdf(request,user_name,pk):
+    return render(request, 'generate_pdf.html')

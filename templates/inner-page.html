@@ -62,7 +62,7 @@
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>
           <li><a class="nav-link scrollto" href="#upload">Upload</a></li>
-          <li><a class="nav-link scrollto" href="#dashboard">Dashboard</a></li>
+          <li><a class="nav-link scrollto" href="javascript:void(0);" onclick="openDashboardPopup()">Dashboard</a></li>
           <li><a class="nav-link scrollto" href="#profile">Profile</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -114,7 +114,6 @@
         </div>
       </div>
       <br>
-      <p> If you want to view the report click on the Dashboard</p>
     </div>
   </div>
 </section>
@@ -193,37 +192,19 @@
   });
 </script>
 
-<!-- ======= Frequently Asked Questions Section ======= -->
-<section id="dashboard" class="dashboard">
-  <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
-    <h3>What is osteoarthritis?</h3>
-    <div class="icon-box">
-      <div class="icon"><i class="bx bx-accessibility"></i></div>
-      <h4 class="title">Symptoms</h4>
-      <p class="description">The main symptoms of osteoarthritis are pain and sometimes stiffness in the affected joints. The pain tends to be worse when you move the joint or at the end of the day. Your joints may feel stiff after rest, but this usually wears off fairly quickly once you get moving. 
-        Symptoms may vary for no obvious reason. Or you may find that your symptoms vary depending on what you’re doing</p>
-    </div>
 
-    <div class="icon-box">
-      <div class="icon"><i class="bx bx-file-find"></i></div>
-      <h4 class="title">Causes</h4>
-      <p class="description">Osteoarthritis, often associated with aging, is influenced by various factors, 
-        including age, gender (more common in women), obesity, joint injuries, and abnormalities. Genetics can also play a role, 
-        with specific gene mutations causing early-onset osteoarthritis. Occasionally, it can result from other joint diseases like rheumatoid arthritis. 
-        Weather changes can affect symptoms but don't cause the condition, and while diet may influence symptoms, weight remains a primary factor in osteoarthritis risk.</p>
-    </div>
-
-    <div class="icon-box">
-      <div class="icon"><i class="bx bx-first-aid"></i></div>
-      <h4 class="title">Diagnosis</h4>
-      <p class="description">It’s important to get an accurate diagnosis if you think you have arthritis, as different types of arthritis often need very different treatments. 
-        The diagnosis of osteoarthritis is usually based on: 
-         your symptoms – how and when they started, how they’ve developed, how they affect your life, and any factors that make them better or worse 
-        a physical examination – your doctor will check for: tenderness over the joint creaking or grating of the joint – known as crepitus
-        bony swelling excess fluid restricted movement joint instability weakness or thinning of the muscles that support the joint.</p>
-    </div>
-
-</section><!-- End Frequently Asked Questions Section -->
+<script>
+  function openDashboardPopup() {
+      const width = 800;
+      const height = 600;
+      const left = (window.innerWidth - width) / 2;
+      const top = (window.innerHeight - height) / 2;
+      const popupURL = "{% url 'dashboard_popup' %}";
+  
+      const dashboardWindow = window.open(popupURL, 'Dashboard', `width=${width},height=${height},left=${left},top=${top}`);
+  }
+  </script>
+  
 
 <!-- ======= Contact Section ======= -->
 <section id="profile" class="profile">

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="your-custom-style.css"> <!-- Add your custom styles here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Dashboard</h1>
+        <!-- Table with Pagination -->
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th><a href="?sort=severity_grade">Severity Grade</a></th>
+                    <th><a href="?sort=run_id">Run ID</a></th>
+                    <th>Input Image</th>
+                    <th>Heatmap</th>
+                    <th>Bar Chart</th>
+                    <th>Generate PDF</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for run in prediction_runs %}
+                <tr class="animated-row">
+                    <td>{{ run.severity_grade }}</td>
+                    <td>{{ run.run_id }}</td>
+                    <td>
+                        <div class="image-container">
+                            <img src="{{ run.input_image.url }}" class="img-thumbnail" alt="Input Image">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="image-container">
+                            <img src="{{ run.gradcam_heatmap.url }}" class="img-thumbnail" alt="Heatmap">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="image-container">
+                            <img src="{{ run.bar_chart_analysis.url }}" class="img-thumbnail" alt="Bar Chart">
+                        </div>
+                    </td>
+                    <td>
+                        <form action="{% url 'generate_pdf' run.user run.run_id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary btn-sm">Generate PDF</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center">
+            <ul class="pagination">
+                <li class="page-item {% if not prediction_runs.has_previous %}disabled{% endif %}">
+                    <a class="page-link" href="?page=1">Previous</a>
+                </li>
+                {% for page_num in prediction_runs.paginator.page_range %}
+                <li class="page-item {% if page_num == prediction_runs.number %}active{% endif %}">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+                {% endfor %}
+                <li class="page-item {% if not prediction_runs.has_next %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ prediction_runs.paginator.num_pages }}">Next</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -376,7 +376,8 @@ def dashboard_popup(request):
 
     return render(request, 'dashboard_popup.html', context)
 
-
+def profile(request):
+    return HttpResponse("Hi")
 
 def generate_pdf(request,user_name,pk):
     return render(request, 'generate_pdf.html')

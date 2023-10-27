@@ -26,3 +26,9 @@ class RegistrationForm(forms.ModelForm):
                 'required': 'Please fill in your password.',
             },
         }
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['name', 'phone', 'age', 'gender']

@@ -14,5 +14,6 @@ urlpatterns = [
     path('prediction/',views.prediction,name="prediction"),
     path('dashboard_popup/', views.dashboard_popup, name='dashboard_popup'),
     path('generate_pdf/<str:user_name>/<int:pk>', views.generate_pdf, name='generate_pdf'),
+    path('profile/update/',views.profile,name="profile"),
 
 ]

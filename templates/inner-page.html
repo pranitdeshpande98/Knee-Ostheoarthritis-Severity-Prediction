@@ -63,7 +63,9 @@
         <ul>
           <li><a class="nav-link scrollto" href="#upload">Upload</a></li>
           <li><a class="nav-link scrollto" href="javascript:void(0);" onclick="openDashboardPopup()">Dashboard</a></li>
-          <li><a class="nav-link scrollto" href="#profile">Profile</a></li>
+          <li><a class="nav-link scrollto"  href="javascript:void(0);" onclick="openProfilePopup()">Profile</a></li>
+          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+          <li><a class="nav-link scrollto" href="#faq">FAQs</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -205,49 +207,229 @@
   }
   </script>
   
+  <script>
+    function   openProfilePopup() {
+        const width = 800;
+        const height = 600;
+        const left = (window.innerWidth - width) / 2;
+        const top = (window.innerHeight - height) / 2;
+        const popupURL = "{% url 'profile' %}";
+    
+        const dashboardWindow = window.open(popupURL, 'Profile', `width=${width},height=${height},left=${left},top=${top}`);
+    }
+    </script>
+
 
 <!-- ======= Contact Section ======= -->
 <section id="profile" class="profile">
-  <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
-    <h3>What is osteoarthritis?</h3>
-    <div class="icon-box">
-      <div class="icon"><i class="bx bx-accessibility"></i></div>
-      <h4 class="title">Symptoms</h4>
-      <p class="description">The main symptoms of osteoarthritis are pain and sometimes stiffness in the affected joints. The pain tends to be worse when you move the joint or at the end of the day. Your joints may feel stiff after rest, but this usually wears off fairly quickly once you get moving. 
-        Symptoms may vary for no obvious reason. Or you may find that your symptoms vary depending on what you’re doing</p>
-    </div>
-
-    <div class="icon-box">
-      <div class="icon"><i class="bx bx-file-find"></i></div>
-      <h4 class="title">Causes</h4>
-      <p class="description">Osteoarthritis, often associated with aging, is influenced by various factors, 
-        including age, gender (more common in women), obesity, joint injuries, and abnormalities. Genetics can also play a role, 
-        with specific gene mutations causing early-onset osteoarthritis. Occasionally, it can result from other joint diseases like rheumatoid arthritis. 
-        Weather changes can affect symptoms but don't cause the condition, and while diet may influence symptoms, weight remains a primary factor in osteoarthritis risk.</p>
-    </div>
-
-    <div class="icon-box">
-      <div class="icon"><i class="bx bx-first-aid"></i></div>
-      <h4 class="title">Diagnosis</h4>
-      <p class="description">It’s important to get an accurate diagnosis if you think you have arthritis, as different types of arthritis often need very different treatments. 
-        The diagnosis of osteoarthritis is usually based on: 
-         your symptoms – how and when they started, how they’ve developed, how they affect your life, and any factors that make them better or worse 
-        a physical examination – your doctor will check for: tenderness over the joint creaking or grating of the joint – known as crepitus
-        bony swelling excess fluid restricted movement joint instability weakness or thinning of the muscles that support the joint.</p>
-    </div>
-
-    
+   
 </section><!-- End Contact Section -->
+ <!-- ======= Frequently Asked Questions Section ======= -->
+ <section id="faq" class="faq section-bg">
+  <div class="container">
 
+    <div class="section-title">
+      <h2>Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-list">
+      <ul>
+        <li data-aos="fade-up">
+          <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapse" data-bs-target="#faq-list-1">
+            What is OsteoArthoScan, and how does it work and How accurate is OsteoArthoScan? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+          <div id="faq-list-1" class="collapse show" data-bs-parent=".faq-list">
+            <p>
+              OsteoArthoScan is an advanced system with an accuracy rate of approximately 69% that 
+              utilizes machine learning and medical imaging to detect and assess the 
+              severity of osteoarthritis in the knee. It works by allowing users to upload their knee 
+              images, which are then analyzed by our algorithms to provide a severity assessment.
+            </p>
+          </div>
+        </li>
+
+        <li data-aos="fade-up" data-aos-delay="100">
+          <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-2" class="collapsed">
+            Is my data secure when using OsteoArthoScan? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+          <div id="faq-list-2" class="collapse" data-bs-parent=".faq-list">
+            <p>
+              Yes, we prioritize the security and privacy of your data. OsteoArthoScan follows stringent data protection measures and complies 
+              with data privacy regulations to ensure the confidentiality and security of your information.
+          </div>
+        </li>
+
+        <li data-aos="fade-up" data-aos-delay="200">
+          <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-3" class="collapsed">
+            Are there any specific image requirements for the knee scans? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+          <div id="faq-list-3" class="collapse" data-bs-parent=".faq-list">
+            <p>
+              We recommend providing clear and high-quality knee images for the most accurate assessment. 
+              Ensure that your image is well-lit, in focus, and captures the entire knee joint area.
+            </p>
+          </div>
+        </li>
+
+        <li data-aos="fade-up" data-aos-delay="300">
+          <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-4" class="collapsed">
+            How do I get started with OsteoArthoScan? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+          <div id="faq-list-4" class="collapse" data-bs-parent=".faq-list">
+            <p>
+              Getting started is easy! Simply create an account on our platform, upload your knee image, and our system will take care of the rest. 
+              Your severity report will be available for review within a short timeframe.
+            </p>
+          </div>
+        </li>
+
+        <li data-aos="fade-up" data-aos-delay="400">
+          <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-5" class="collapsed"> What should I do if I have questions or encounter issues while using OsteoArthoScan?
+             <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+          <div id="faq-list-5" class="collapse" data-bs-parent=".faq-list">
+            <p>
+              If you have any questions or encounter issues, please feel free to reach out to our support team. We are here to assist you and provide the support you need.
+            </p>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+
+  </div>
+</section><!-- End Frequently Asked Questions Section -->
+
+<!-- ======= Contact Section ======= -->
+<section id="contact" class="contact">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>Contact</h2>
+    </div>
+  </div>
+
+  <div>
+    <iframe style="border:0; width: 100%; height: 350px;" src="https://www.google.com/maps/embed/v1/place?q=University+of+Maryland,+Baltimore+County,+1000+Hilltop+Cir,+Baltimore,+MD+21250&key=AIzaSyCZXjUqYpMbpgBYO9WtLsz59-H5QjB-HKQ"
+    frameborder="0" allowfullscreen></iframe>
+  </div>
+
+  <div class="container">
+    <div class="row mt-5">
+
+      <div class="col-lg-4">
+        <div class="info">
+          <div class="address">
+            <i class="bi bi-geo-alt"></i>
+            <h4>Location:</h4>
+            <p>1000 Hilltop Circle, Baltimore, MD 21250</p>
+          </div>
+
+          <div class="email">
+            <i class="bi bi-envelope"></i>
+            <h4>Email:</h4>
+            <p>teamosteoarthoscan@gmail.com</p>
+          </div>
+
+          <div class="phone">
+            <i class="bi bi-phone"></i>
+            <h4>Call:</h4>
+            <p>+1 667 464 5415</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-lg-8 mt-5 mt-lg-0">
+
+        <form id="contact-form" form action="{% url 'contact_form' %}" method="post">
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+            </div>
+            <div class="col-md-6 form-group mt-3 mt-md-0">
+              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+            </div>
+          </div>
+          <div class="form-group mt-3">
+            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+          </div>
+          <div class="form-group mt-3">
+            <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+          </div>
+          <br>
+          <div class="text-center"><button type="submit" class="btn btn-primary btn-block">Send Message</button></div>
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+</section><!-- End Contact Section -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("#contact-form");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault(); // Prevent the default form submission
+
+      // Show a loading spinner while the form is being submitted
+      const loadingSpinner = document.createElement("div");
+      loadingSpinner.classList.add("loading");
+      form.appendChild(loadingSpinner);
+
+      // Simulate sending the form data to the server
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Remove the loading spinner
+        loadingSpinner.remove();
+
+        if (data.success) {
+          // Message sent successfully, display the success message
+          Swal.fire("Success", "Your message has been sent. Thank you!", "success");
+
+          // Clear the form fields if needed
+          form.reset();
+        } else {
+          // Handle server-side errors if any and display an error message
+          Swal.fire("Error", "There was an error sending your message. Please try again.", "error");
+        }
+      });
+    });
+  });
+</script>
     
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
+  <!-- ======= Footer ======= -->
   <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6 footer-contact">
+            <h3>OsteoArthoScan</h3>
+            <p>
+              1000 Hilltop Circle <br>
+              Baltimore, MD 21227<br>
+              United States <br><br>
+              <strong>Phone:</strong> +1 667 464 5415<br>
+              <strong>Email:</strong> teamosteoarthoscan@gmail.com <br>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="container d-md-flex py-4">
 
       <div class="me-md-auto text-center text-md-start">
+        <div class="copyright">
+          &copy; Copyright <strong><span>Team 2</span></strong>. All Rights Reserved
+        </div>
         <div class="credits">
           <!-- All the links in the footer should remain intact. -->
           <!-- You can delete the links only if you purchased the pro version. -->

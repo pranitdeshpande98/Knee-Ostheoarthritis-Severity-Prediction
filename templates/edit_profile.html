@@ -121,7 +121,7 @@
         document.addEventListener("DOMContentLoaded", function () {
           const form = document.querySelector("form");
       
-          form.addEventListener("submit", function (e) {
+          form.addEventListener("submit", async function (e) {
             e.preventDefault(); // Prevent the default form submission
       
             // Show "Updating Profile" message
@@ -135,18 +135,26 @@
             });
       
             // Simulate sending the form data to the server
-            fetch(form.action, {
-              method: 'POST',
-              body: new FormData(form),
-            })
-            .then(response => response.json())
-            .then(data => {
-              // Close the "Updating Profile" message
-              Swal.close();
+            try {
+              const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+              });
       
-              if (data.success) {
-                // Redirect to the prediction page after a successful update
-                window.location.href = "/prediction";
+              if (response.ok) {
+                // Close the "Updating Profile" message
+                Swal.close();
+      
+                // Show "Profile Changed Successfully" message
+                Swal.fire({
+                  title: "Profile Changed Successfully",
+                  icon: "success"
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    // Close the HTML popup window
+                    window.close();
+                  }
+                });
       
                 // Clear the form fields if needed
                 form.reset();
@@ -158,10 +166,17 @@
                   icon: "error"
                 });
               }
-            });
+            } catch (error) {
+              // Handle network or other errors and display an error message using SweetAlert
+              Swal.fire({
+                title: "Error",
+                text: "An error occurred. Please try again later.",
+                icon: "error"
+              });
+            }
           });
         });
-      </script>
+    </script>
      </main><!-- End #main -->
   
     <!-- ======= Footer ======= -->

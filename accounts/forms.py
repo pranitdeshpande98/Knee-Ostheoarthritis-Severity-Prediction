@@ -32,3 +32,9 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['name', 'phone', 'age', 'gender']
+
+
+class UserProfileFormEdit(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['email', 'name', 'phone', 'age', 'gender']

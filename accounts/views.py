@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.forms import ValidationError
 from django.shortcuts import render, redirect
-from accounts.forms import RegistrationForm
+from accounts.forms import RegistrationForm, UserProfileFormEdit
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from accounts.utils import send_password_reset_email
@@ -377,7 +377,17 @@ def dashboard_popup(request):
     return render(request, 'dashboard_popup.html', context)
 
 def profile(request):
-    return HttpResponse("Hi")
+    user = request.user  # Get the currently logged-in user
+    if request.method == 'POST':
+        form = UserProfileFormEdit(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Redirect to the profile page after saving
+    else:
+        form = UserProfileFormEdit(instance=user)
+
+    return render(request, 'edit_profile.html', {'form': form})
+
 
 def generate_pdf(request,user_name,pk):
     return render(request, 'generate_pdf.html')

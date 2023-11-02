@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.forms import ValidationError
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from accounts.forms import RegistrationForm, UserProfileFormEdit
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
@@ -20,6 +20,8 @@ from PIL import Image
 from .models import PredictionRun
 from datetime import datetime
 import os
+from io import BytesIO
+from django.template.loader import get_template
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.conf import settings
@@ -388,6 +390,21 @@ def profile(request):
 
     return render(request, 'edit_profile.html', {'form': form})
 
+def generate_pdf(request, user_name, pk):
+    prediction_run = get_object_or_404(PredictionRun, user__email=user_name, run_id=pk)
+    user = get_object_or_404(User,email=user_name)
+    severity_grade= prediction_run.severity_grade
+    context = {
+        'email': user_name,
+        'age': user.age,
+        'name': user.name,
+        'phone': user.phone,
+        'gender': user.gender,
+        'xray_image_url': prediction_run.input_image.url,
+        'heat_map_image_url': prediction_run.gradcam_heatmap.url,
+        'analysis_plot_image_url': prediction_run.bar_chart_analysis.url,
+        'observations': 'Add your observations here',  # Replace with actual observations
+        'additional_notes': 'Add additional notes here',  # Replace with actual notes
+    }
 
-def generate_pdf(request,user_name,pk):
-    return render(request, 'generate_pdf.html')
+    return render(request, 'generate_pdf.html', context)

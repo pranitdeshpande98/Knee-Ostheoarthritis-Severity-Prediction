@@ -394,12 +394,18 @@ def generate_pdf(request, user_name, pk):
     prediction_run = get_object_or_404(PredictionRun, user__email=user_name, run_id=pk)
     user = get_object_or_404(User,email=user_name)
     severity_grade= prediction_run.severity_grade
+    date_string = str(pk)  # Convert the integer to a string
+    year = date_string[:4]
+    month = date_string[4:6]
+    day = date_string[6:8]
+    formatted_date = f"{month}/{day}/{year}"
     context = {
         'email': user_name,
         'age': user.age,
         'name': user.name,
         'phone': user.phone,
         'gender': user.gender,
+        'date' : formatted_date,
         'xray_image_url': prediction_run.input_image.url,
         'heat_map_image_url': prediction_run.gradcam_heatmap.url,
         'analysis_plot_image_url': prediction_run.bar_chart_analysis.url,

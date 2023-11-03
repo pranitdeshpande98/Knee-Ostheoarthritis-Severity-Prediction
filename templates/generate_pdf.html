@@ -1,49 +1,165 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Medical Report</title>
-    <style>
-        .container {
-            display: flex;
+    <head>
+        <title>Medical Report</title>
+        <style>
+            .container {
+                display: flex;
+            }
+    
+            .column {
+                flex: 1;
+                padding: 10px;
+            }
+            
+            body {
+            margin: 0;
+            padding: 0;
+            }
+
+            .container_1 {
+            padding: 100px; /* Adjust the padding for spacing */
+            text-align: left;
         }
 
-        .column {
-            flex: 1;
-            padding: 10px;
+        table {
+            border-collapse: collapse;
+            width: 100%;
         }
-    </style>
-</head>
-<body>
-    <h1>Medical Report for {{ email }}</h1>
 
+        table, th, td {
+            border: none;
+        }
+
+        th {
+            text-align: left;
+            padding-right: 10px;
+        }
+
+        td {
+            padding-right: 10px;
+        }
+        </style>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      
+        <title>Osteo Arthritis Severity Detection System</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+      
+        <!-- Favicons -->
+        <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+        <link href="{% static 'assts/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+        <!-- Vendor CSS Files -->
+        <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+        <link href="{%static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+      
+        <!-- Template Main CSS File -->
+        <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+        <!-- =======================================================
+        * Template Name: Medilab
+        * Updated: Sep 18 2023 with Bootstrap v5.3.2
+        * Template URL: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/
+        * Author: BootstrapMade.com
+        * License: https://bootstrapmade.com/license/
+        ======================================================== -->
+      </head>
+      <body>
+        <!-- ======= Top Bar ======= -->
+        <div id="topbar" class="d-flex align-items-center fixed-top">
+          <div class="container d-flex justify-content-between">
+            <div class="contact-info d-flex align-items-center">
+              <i class="bi bi-envelope"></i> <a href="mailto:contact@example.com">teamosteoarthoscan@gmail.com</a>
+              <i class="bi bi-phone"></i> +1 667 464 5415
+            </div>
+          </div>
+        </div>
+      <!-- Include SweetAlert JavaScript and CSS -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+      
+      <!-- Your HTML registration form -->
+      <!-- Include SweetAlert JavaScript and CSS -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+      
+        <!-- ======= Header ======= -->
+        <header id="header" class="fixed-top">
+          <div class="container d-flex align-items-center">
+      
+            <h1 class="logo me-auto">OsteoArthoScan</h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+          </div>
+        </header><!-- End Header -->
+        <br>
+        <br><br><br><br>
+        <div class="container">
+            <!-- Patient Information Table -->
+            <h2> Patient Information </h2>
+            <table>
+                <tr>
+                    <th>Name:</th>
+                    <td>{{ name }}</td>
+                    <th>Age:</th>
+                    <td>{{ age }}</td>
+                </tr>
+                <tr>
+                    <th>Gender:</th>
+                    <td>{{ gender }}</td>
+                    <th>Phone Number:</th>
+                    <td>{{ phone }}</td>
+                </tr>
+                <tr>
+                    <th>Scan Date:</th>
+                    <td>{{ date }}</td>
+                    <th> Email Address:</th>
+                    <td>{{ email }}</td>
+                </tr>
+            </table>
+        </div>
+<br><br>
     <div class="container">
         <!-- Input X-ray Image -->
         <div class="column">
-            <h2>Input X-ray</h2>
+            <!-- Input X-ray Image -->
+            <h2>X-ray</h2>
             <img src="{{ xray_image_url }}" alt="Input X-ray">
         </div>
 
         <!-- Heat Map Image -->
         <div class="column">
-            <h2>Heat Map</h2>
+            <!-- Heat Map Image -->
+            <h2>Explainability</h2>
             <img src="{{ heat_map_image_url }}" alt="Heat Map">
         </div>
 
         <!-- Analysis Plot -->
         <div class="column">
-            <h2>Analysis Plot</h2>
+            <h2>Grade Analysis</h2>
             <img src="{{ analysis_plot_image_url }}" alt="Analysis Plot">
         </div>
     </div>
-
+         <!-- Observations and Impressions -->
+    <div class="container_1">
+        <h2>Observations and Impressions</h2>
+        <p>{{ observations }}</p>
+    
+        <!-- Additional content, e.g., doctor's notes, recommendations, etc. -->
+        <h2>Additional Notes</h2>
+        <p>{{ additional_notes }}</p>
+    </div>
     <!-- Observations and Impressions -->
-    <h2>Observations and Impressions</h2>
-    <p>{{ observations }}</p>
-
-    <!-- Additional content, e.g., doctor's notes, recommendations, etc. -->
-    <h2>Additional Notes</h2>
-    <p>{{ additional_notes }}</p>
-
+    
+    <!-- Add your CSS styles here, e.g., for page layout and formatting -->
     <!-- Add your CSS styles here, e.g., for page layout and formatting -->
 </body>
 </html>

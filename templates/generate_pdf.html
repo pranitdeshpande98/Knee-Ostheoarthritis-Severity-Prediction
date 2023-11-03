@@ -3,7 +3,25 @@
 <html>
     <head>
         <title>Medical Report</title>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+        <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
         <style>
+    /* Other CSS styles */
+
+    body::before {
+    content: "OsteoArthoScan";
+    opacity: 0.2; /* Adjust the opacity as needed */
+    font-size: 5rem; /* Adjust the font size as needed */
+    color: blue; /* Change the color to blue */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg); /* Add rotation for inclined effect */
+    z-index: -1; /* Place the watermark behind the content */
+}
+
+    /* Rest of your CSS styles */
+
             .container {
                 display: flex;
             }
@@ -40,6 +58,20 @@
         td {
             padding-right: 10px;
         }
+
+        .print-button {
+        position: absolute;
+        top: 10px; /* Adjust the top distance as needed */
+        right: 10px; /* Adjust the right distance as needed */
+    }
+
+    .print-button button {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
         </style>
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -48,7 +80,7 @@
         <meta content="" name="description">
         <meta content="" name="keywords">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-      
+       
         <!-- Favicons -->
         <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
         <link href="{% static 'assts/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
@@ -63,7 +95,6 @@
         <link href="{%static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
         <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
         <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
-      
         <!-- Template Main CSS File -->
         <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
         <!-- =======================================================
@@ -74,7 +105,7 @@
         * License: https://bootstrapmade.com/license/
         ======================================================== -->
       </head>
-      <body>
+      <body style="background-color: #f0f8ff;">
         <!-- ======= Top Bar ======= -->
         <div id="topbar" class="d-flex align-items-center fixed-top">
           <div class="container d-flex justify-content-between">
@@ -98,6 +129,15 @@
             <h1 class="logo me-auto">OsteoArthoScan</h1>
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+            <nav id="navbar" class="navbar order-last order-lg-0">
+                <ul>
+                    <div class="print-button">
+                        <button onclick="generatePDF()">Print/Save as PDF</button>
+                    </div>
+                    
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+              </nav><!-- .navbar -->
           </div>
         </header><!-- End Header -->
         <br>
@@ -151,15 +191,40 @@
          <!-- Observations and Impressions -->
     <div class="container_1">
         <h2>Observations and Impressions</h2>
-        <p>{{ observations }}</p>
+        <ul>
+            {% for observation in observations %}
+                <li><strong>{{ observation }}</strong></li>
+            {% endfor %}
+        </ul>
     
         <!-- Additional content, e.g., doctor's notes, recommendations, etc. -->
         <h2>Additional Notes</h2>
-        <p>{{ additional_notes }}</p>
+        <ul>
+            {% for additional_notes in additional_notes %}
+                <li><strong>{{ additional_notes }}</strong></li>
+            {% endfor %}
+        </ul>
+        <br>
+        <p>Dr. Einstein</p>
+        <img src="{% static 'assets/img/signature.png' %}" alt="Doctor's Signature">
+        <p>Board-Certified Orthopedic Specialist</p>
+        <p>OsteoArthoScan Clinic</p>
     </div>
+
     <!-- Observations and Impressions -->
+    <!-- Add your CSS styles here, e.g., for page layout and formatting -->
+    <!-- Add your CSS styles here, e.g., for page layout and formatting -->
+    <script>
+        function generatePDF() {
+            const pdf = new jsPDF();
+            const container = document.querySelector('.container');
     
-    <!-- Add your CSS styles here, e.g., for page layout and formatting -->
-    <!-- Add your CSS styles here, e.g., for page layout and formatting -->
+            html2canvas(container).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                pdf.addImage(imgData, 'PNG', 0, 0);
+                pdf.save('report.pdf');
+            });
+        }
+    </script>
 </body>
 </html>

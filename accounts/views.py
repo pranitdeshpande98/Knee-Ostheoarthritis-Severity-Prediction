@@ -399,6 +399,69 @@ def generate_pdf(request, user_name, pk):
     month = date_string[4:6]
     day = date_string[6:8]
     formatted_date = f"{month}/{day}/{year}"
+    observations = {
+        'Healthy': [
+            'Radiographic Evaluation: No signs of joint space narrowing or osteophytes.',
+            'Clinical Symptoms: Patients are asymptomatic and do not report pain or functional limitations.',
+            'Management: Emphasize the importance of maintaining a healthy lifestyle, including regular exercise, a balanced diet, and weight management.'
+        ],
+        'Doubtful': [
+            'Radiographic Evaluation: Minimal joint space narrowing and possible presence of osteophytes.',
+            'Clinical Symptoms: Patients may report mild discomfort, especially after physical activity.',
+            'Medical Terminology: Early signs of articular cartilage wear with minimal subchondral bone changes.',
+            'Management: Focus on lifestyle modifications, weight reduction if necessary, and conservative treatment such as physical therapy. Nonsteroidal anti-inflammatory drugs (NSAIDs) may be considered for pain management.'
+        ],
+        'Minimal': [
+            'Radiographic Evaluation: Moderate joint space narrowing, presence of osteophytes, and possible subchondral bone changes',
+            'Clinical Symptoms: Patients often experience pain, swelling, and stiffness.',
+            'Medical Terminology: Noticeable cartilage loss with subchondral sclerosis and cyst formation.',
+            'Management: Continued emphasis on lifestyle changes, physical therapy, and stronger pain management options. Visco-supplementation injections may be considered.'
+        ],
+        'Moderate': [
+            'Radiographic Evaluation: Significant joint space narrowing, osteophytes, subchondral sclerosis, and cysts.',
+            'Clinical Symptoms: Patients may have severe pain, joint instability, and functional limitations.',
+            'Medical Terminology: Extensive cartilage loss, subchondral cysts, sclerosis, and possible malalignment.',
+            'Management: Options include unloading knee braces, assistive devices like canes, physical therapy, and more aggressive pain management strategies, including corticosteroid injections.'
+        ],
+        'Severe': [
+            'Radiographic Evaluation: Severe joint space narrowing, marked osteophytes, extensive subchondral sclerosis, and cysts.',
+            'Clinical Symptoms: Patients often suffer from severe pain, limited mobility, and joint deformity.',
+            'Medical Terminology: Advanced articular cartilage degeneration with exposed subchondral bone.',
+            'Management: Surgical interventions, such as total knee arthroplasty (TKA) or knee replacement, may be necessary to relieve pain and restore function.'
+        ]
+    }
+
+    additional_notes = {
+        'Healthy': [
+            'No clinical or radiographic evidence of osteoarthritis.',
+            'Patients are advised to maintain a healthy lifestyle, including regular physical activity, weight management, and a balanced diet.'
+        ],
+        'Doubtful': [
+            'Over-the-counter non-steroidal anti-inflammatory drugs (NSAIDs) such as ibuprofen or naproxen can be used for pain relief and inflammation.',
+            'Physical therapy to strengthen the muscles around the knee joint is recommended.',
+            'The use of intra-articular hyaluronic acid injections (viscosupplementation) may be considered for symptomatic relief and improved joint lubrication.'
+        ],
+        'Minimal': [
+            'Prescription medications, including Celecoxib (a COX-2 inhibitor), may be prescribed for pain management.',
+            'Corticosteroid injections can provide short-term relief from pain and inflammation.',
+            'Patients should be encouraged to engage in low-impact exercises, such as swimming or stationary cycling.',
+            'The use of unloader knee braces may help alleviate discomfort.'
+        ],
+        'Moderate': [
+            'Opioid medications like Tramadol may be considered for short-term pain relief in consultation with a pain specialist.',
+            'Viscosupplementation with hyaluronic acid can provide additional support.',
+            'High tibial osteotomy is a surgical option to realign the knee joint and offload the damaged area.',
+        ],
+        'Severe': [
+            'Total knee replacement surgery (arthroplasty) is the gold standard treatment at this stage.',
+            'Surgical procedures may include a variety of implant types, such as cemented or uncemented, as well as options like minimally invasive techniques.',
+            'Post-surgery, pain management often involves opioids in the immediate recovery phase.',
+            'Physical therapy and rehabilitation are crucial for regaining joint function and mobility.',
+            'Patients should be educated on post-operative care and the importance of maintaining a healthy weight to prolong the lifespan of the implant'
+        ]
+    }
+
+
     context = {
         'email': user_name,
         'age': user.age,
@@ -406,11 +469,12 @@ def generate_pdf(request, user_name, pk):
         'phone': user.phone,
         'gender': user.gender,
         'date' : formatted_date,
+        'grade':severity_grade,
         'xray_image_url': prediction_run.input_image.url,
         'heat_map_image_url': prediction_run.gradcam_heatmap.url,
         'analysis_plot_image_url': prediction_run.bar_chart_analysis.url,
-        'observations': 'Add your observations here',  # Replace with actual observations
-        'additional_notes': 'Add additional notes here',  # Replace with actual notes
+        'observations': observations[severity_grade],
+        'additional_notes': additional_notes[severity_grade],  # Replace with actual notes
     }
 
     return render(request, 'generate_pdf.html', context)

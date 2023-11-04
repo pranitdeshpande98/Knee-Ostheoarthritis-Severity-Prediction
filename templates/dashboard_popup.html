@@ -49,7 +49,7 @@
                     <td>
                         <form action="{% url 'generate_pdf' run.user run.run_id %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-primary btn-sm">Generate PDF</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Generate Report</button>
                         </form>
                     </td>
                 </tr>

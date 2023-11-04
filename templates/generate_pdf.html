@@ -3,8 +3,6 @@
 <html>
     <head>
         <title>Medical Report</title>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-        <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
         <style>
     /* Other CSS styles */
 
@@ -66,10 +64,12 @@
     }
 
     .print-button button {
-        background-color: #007BFF;
-        color: white;
-        border: none;
+        background-color: #007BFF; /* Button background color */
+        color: white; /* Button text color */
+        border: none; /* Remove button border */
         cursor: pointer;
+        padding: 10px 20px; /* Adjust the padding as needed */
+        border-radius: 5px; /* Add rounded corners */
     }
         </style>
         <meta charset="utf-8">
@@ -79,7 +79,7 @@
         <meta content="" name="description">
         <meta content="" name="keywords">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-       
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.1/html2pdf.bundle.min.js"></script>
         <!-- Favicons -->
         <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
         <link href="{% static 'assts/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
@@ -123,21 +123,20 @@
       
         <!-- ======= Header ======= -->
         <header id="header" class="fixed-top">
-          <div class="container d-flex align-items-center">
-      
-            <h1 class="logo me-auto">OsteoArthoScan</h1>
-            <!-- Uncomment below if you prefer to use an image logo -->
-            <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-            <nav id="navbar" class="navbar order-last order-lg-0">
-                <ul>
-                    <div class="print-button">
-                        <button onclick="generatePDF()">Print/Save as PDF</button>
-                    </div>
-                    
-                </ul>
-                <i class="bi bi-list mobile-nav-toggle"></i>
-              </nav><!-- .navbar -->
-          </div>
+            <div class="container d-flex align-items-center">
+                <h1 class="logo me-auto">OsteoArthoScan</h1>
+                <!-- Uncomment below if you prefer to use an image logo -->
+                <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+                <div class="print-button">
+                    <button onclick="window.print()">Print/Save as PDF</button>
+                </div>
+                <nav id="navbar" class="navbar order-last order-lg-0">
+                    <ul>
+                        <i class="bi bi-list mobile-nav-toggle"></i>
+                    </ul>
+                </nav><!-- .navbar -->
+            </div>
+            
         </header><!-- End Header -->
         <br>
         <br><br><br><br>
@@ -213,5 +212,17 @@
     <!-- Observations and Impressions -->
     <!-- Add your CSS styles here, e.g., for page layout and formatting -->
     <!-- Add your CSS styles here, e.g., for page layout and formatting -->
+    <!-- Your existing HTML code -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.0.0-alpha.12/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+ function printPage() {
+    window.print();
+}
+    </script>
+    </body>
+    </html>  
 </body>
 </html>

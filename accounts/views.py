@@ -406,13 +406,13 @@ def generate_pdf(request, user_name, pk):
             'Management: Emphasize the importance of maintaining a healthy lifestyle, including regular exercise, a balanced diet, and weight management.'
         ],
         'Doubtful': [
-            'Radiographic Evaluation: Minimal joint space narrowing and possible presence of osteophytes.',
+            'Radiographic Evaluation: Doubtful joint space narrowing and possible presence of osteophytes.',
             'Clinical Symptoms: Patients may report mild discomfort, especially after physical activity.',
             'Medical Terminology: Early signs of articular cartilage wear with minimal subchondral bone changes.',
             'Management: Focus on lifestyle modifications, weight reduction if necessary, and conservative treatment such as physical therapy. Nonsteroidal anti-inflammatory drugs (NSAIDs) may be considered for pain management.'
         ],
         'Minimal': [
-            'Radiographic Evaluation: Moderate joint space narrowing, presence of osteophytes, and possible subchondral bone changes',
+            'Radiographic Evaluation: Minimal joint space narrowing, presence of osteophytes, and possible subchondral bone changes',
             'Clinical Symptoms: Patients often experience pain, swelling, and stiffness.',
             'Medical Terminology: Noticeable cartilage loss with subchondral sclerosis and cyst formation.',
             'Management: Continued emphasis on lifestyle changes, physical therapy, and stronger pain management options. Visco-supplementation injections may be considered.'
@@ -437,7 +437,7 @@ def generate_pdf(request, user_name, pk):
             'Patients are advised to maintain a healthy lifestyle, including regular physical activity, weight management, and a balanced diet.'
         ],
         'Doubtful': [
-            'Over-the-counter non-steroidal anti-inflammatory drugs (NSAIDs) such as ibuprofen or naproxen can be used for pain relief and inflammation.',
+            'Over-the-counter non-steroidal anti-inflammatory drugs (NSAIDs) such as ibuprofen,  celecoxib, diclofenac (Voltaren), piroxicam (Feldene) or naproxen can be used for pain relief and inflammation.',
             'Physical therapy to strengthen the muscles around the knee joint is recommended.',
             'The use of intra-articular hyaluronic acid injections (viscosupplementation) may be considered for symptomatic relief and improved joint lubrication.'
         ],

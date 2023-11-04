@@ -71,7 +71,6 @@
         border: none;
         cursor: pointer;
     }
-
         </style>
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -205,26 +204,14 @@
             {% endfor %}
         </ul>
         <br>
-        <p>Dr. Beethoven</p>
-        <img src="{% static 'assets/img/signature (1).png' %}" alt="Doctor's Signature">
-        <p>Board-Certified Orthopedic Specialist</p>
-        <p>OsteoArthoScan Clinic</p>
-    </div>
 
+    <p>Dr. Beethoven</p>
+    <img src="{% static 'assets/img/sign_crop (1).png' %}" alt="Doctor's Signature">
+    <p>Board-Certified Orthopedic Specialist</p>
+    <p>OsteoArthoScan Clinic</p>
+   </div>
     <!-- Observations and Impressions -->
     <!-- Add your CSS styles here, e.g., for page layout and formatting -->
     <!-- Add your CSS styles here, e.g., for page layout and formatting -->
-    <script>
-        function generatePDF() {
-            const pdf = new jsPDF();
-            const container = document.querySelector('.container');
-    
-            html2canvas(container).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                pdf.addImage(imgData, 'PNG', 0, 0);
-                pdf.save('report.pdf');
-            });
-        }
-    </script>
 </body>
 </html>

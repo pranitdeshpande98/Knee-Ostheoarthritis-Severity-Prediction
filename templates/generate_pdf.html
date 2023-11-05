@@ -18,7 +18,24 @@
 }
 
     /* Rest of your CSS styles */
+    @media print {
+            /* Print-specific styles */
+            body::before {
+                display: none; /* Hide the watermark when printing */
+            }
 
+            .container {
+                display: flex; /* Use a block layout for printing */
+
+            }
+
+            .column {
+                width: 100%;
+                padding: 10px;
+            }
+
+            /* Additional print-specific styles for layout, fonts, etc. */
+        }
             .container {
                 display: flex;
             }

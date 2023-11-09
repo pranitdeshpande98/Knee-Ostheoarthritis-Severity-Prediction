@@ -25,7 +25,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG',cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['139.144.194.198', '127.0.0.1', 'osteoarthoscan.online', 'www.osteoarthoscan.online']
 
 LOGOUT_REDIRECT_URL = '/'
 # Application definition

@@ -4,17 +4,29 @@
 <head>
     <title>Medical Report</title>
     <style>
-        /* Other CSS styles */
         body::before {
-            content: "OsteoArthoScan";
-            opacity: 0.2;
-            font-size: 5rem;
-            color: blue;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            z-index: -1;
+    content: "OsteoArthoScan";
+    opacity: 0.2;
+    font-size: 5rem;
+    color: blue;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    z-index: -1;
+}
+        /* Reset default browser styles */
+        body, h2, table, ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Other CSS styles for screen and print */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 10pt; /* Adjust font size as needed */
         }
 
         .container {
@@ -28,17 +40,12 @@
         }
 
         .column img {
-            max-width: 100%; /* Set a maximum width for images */
+            max-width: 100%;
             height: auto;
         }
 
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
         .container_1 {
-            padding: 100px;
+            padding: 10px;
             text-align: left;
         }
 
@@ -47,17 +54,8 @@
             width: 100%;
         }
 
-        table, th, td {
-            border: none;
-        }
-
-        th {
-            text-align: left;
-            padding-right: 10px;
-        }
-
-        td {
-            padding-right: 10px;
+        th, td {
+            padding: 5px;
         }
 
         .print-button {
@@ -74,8 +72,44 @@
             padding: 10px 20px;
             border-radius: 5px;
         }
+        .container table {
+        margin: 0; /* Remove any margin */
+    }
+    .container .column {
+        margin-top: 0; /* Remove top margin */
+    }
+        /* Reduce font size for print */
+        @media print {
+            body {
+                font-family: Times New Roman, serif;
+                font-size: 8pt; /* Adjust font size for printing */
+            }
+            @page {
+        size: 8.5in 14in;
+        margin: 0;
+    }
+    p, li, td, th {
+        overflow-wrap: break-word;
+    }
+            .container_1 {
+                padding: 5px; /* Adjust padding for printing */
+            }
 
+            .column img {
+                max-width: 80%; /* Reduce image size for printing */
+            }
+        }
+
+        .signature img {
+            max-width: 150px; /* Reduce signature size for both screen and print */
+        }
+
+        /* Shift the Observations and Notes sections to the right */
+        .observation-notes {
+            margin-left: 7%; /* Adjust the margin as needed */
+        }
     </style>
+    
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -184,14 +218,16 @@
             <img src="{{ analysis_plot_image_url }}" alt="Analysis Plot">
         </div>
     </div>
+    <br>
     <!-- Observations and Impressions -->
-    <div class="container_1">
+    <div class="observation-notes">
         <h2>Observations and Impressions</h2>
         <ul>
             {% for observation in observations %}
                 <li><strong>{{ observation }}</strong></li>
             {% endfor %}
         </ul>
+        <br>
         <!-- Additional content, e.g., doctor's notes, recommendations, etc. -->
         <h2>Additional Notes</h2>
         <ul>
@@ -200,11 +236,13 @@
             {% endfor %}
         </ul>
         <br>
-        <p>Dr. Beethoven</p>
-        <img src="{% static 'assets/img/sign_crop (1).png' %}" alt="Doctor's Signature">
+        <p><b>Dr. Beethoven</b></p>
+        <div class="signature">
+            <img src="{% static 'assets/img/sign_crop (1).png' %}" alt="Doctor's Signature">
+        </div>
         <p>Board-Certified Orthopedic Specialist</p>
-        <p>OsteoArthoScan Clinic</p>
     </div>
+
     <!-- Add your CSS styles here, e.g., for page layout and formatting -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.0.0-alpha.12/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.1/html2pdf.bundle.min.js"></script>

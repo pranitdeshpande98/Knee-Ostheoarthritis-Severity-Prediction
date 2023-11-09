@@ -78,16 +78,16 @@
     .container .column {
         margin-top: 0; /* Remove top margin */
     }
+    @page {
+        size: 8.5in 14in;
+        margin: 0;
+    }
         /* Reduce font size for print */
         @media print {
             body {
                 font-family: Times New Roman, serif;
                 font-size: 8pt; /* Adjust font size for printing */
             }
-            @page {
-        size: 8.5in 14in;
-        margin: 0;
-    }
     p, li, td, th {
         overflow-wrap: break-word;
     }

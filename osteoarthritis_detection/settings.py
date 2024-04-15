@@ -76,15 +76,9 @@ WSGI_APPLICATION = 'osteoarthritis_detection.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+import dj_database_url
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-    }
+    'default': dj_database_url.parse(config('DB_URL'))
 }
 
 AUTH_USER_MODEL = 'accounts.User'
